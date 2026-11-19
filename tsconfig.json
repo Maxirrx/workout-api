@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./build",
+    "rootDir": "./src",
+    "types": ["jest", "node"],
+  },
+  "lib": ["es2015"],
+}
