@@ -1,7 +1,7 @@
-import { Exercice } from "../../../domain/entity/Exercice"
-import { Performance } from "../../../domain/entity/Performance"
-import { Muscle } from "../../../domain/entity/Muscle"
-import { User } from "../../../domain/entity/User"
+import { Exercice } from "../../../Domain/Entity/Exercice"
+import { Performance } from "../../../Domain/Entity/Performance"
+import { Muscle } from "../../../Domain/Entity/Muscle"
+import { User } from "../../../Domain/Entity/User"
 
 const muscle1 = new Muscle(1, "Biceps")
 const muscle2 = new Muscle(2, "Triceps")

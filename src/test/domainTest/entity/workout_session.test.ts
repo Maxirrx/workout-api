@@ -1,6 +1,6 @@
-import { User } from "../../domain/entity/User"
-import { WorkoutSession } from "../../domain/entity/WorkoutSession"
-import { WorkoutTemplate } from "../../domain/entity/WorkoutTemplate"
+import { User } from "../../../Domain/Entity/User"
+import { WorkoutSession } from "../../../Domain/Entity/WorkoutSession"
+import { WorkoutTemplate } from "../../../Domain/Entity/WorkoutTemplate"
 
 const user = new User("Max", "max+test@gmail.com", "P@ssword1234")
 const workout_template = new WorkoutTemplate(1, "PUSH", user, false)

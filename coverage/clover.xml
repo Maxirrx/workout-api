@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1795098945038" clover="3.2.0">
-  <project timestamp="1795098945039" name="All files">
-    <metrics statements="47" coveredstatements="47" conditionals="23" coveredconditionals="23" methods="11" coveredmethods="11" elements="81" coveredelements="81" complexity="0" loc="47" ncloc="47" packages="1" files="4" classes="4"/>
-    <file name="Exercice.ts" path="/home/max/workout-api/src/domain/entity/Exercice.ts">
+<coverage generated="1795100700140" clover="3.2.0">
+  <project timestamp="1795100700140" name="All files">
+    <metrics statements="61" coveredstatements="61" conditionals="27" coveredconditionals="27" methods="15" coveredmethods="15" elements="103" coveredelements="103" complexity="0" loc="61" ncloc="61" packages="1" files="6" classes="6"/>
+    <file name="Exercice.ts" path="/home/max/workout-api/src/Domain/Entity/Exercice.ts">
       <metrics statements="11" coveredstatements="11" conditionals="7" coveredconditionals="7" methods="3" coveredmethods="3"/>
       <line num="4" count="8" type="stmt"/>
       <line num="13" count="7" type="stmt"/>
@@ -16,13 +16,13 @@
       <line num="28" count="7" type="cond" truecount="7" falsecount="0"/>
       <line num="29" count="5" type="stmt"/>
     </file>
-    <file name="Muscle.ts" path="/home/max/workout-api/src/domain/entity/Muscle.ts">
+    <file name="Muscle.ts" path="/home/max/workout-api/src/Domain/Entity/Muscle.ts">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <line num="1" count="6" type="stmt"/>
       <line num="6" count="6" type="stmt"/>
       <line num="7" count="6" type="stmt"/>
     </file>
-    <file name="Performance.ts" path="/home/max/workout-api/src/domain/entity/Performance.ts">
+    <file name="Performance.ts" path="/home/max/workout-api/src/Domain/Entity/Performance.ts">
       <metrics statements="11" coveredstatements="11" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
       <line num="3" count="5" type="stmt"/>
       <line num="13" count="4" type="stmt"/>
@@ -36,30 +36,50 @@
       <line num="28" count="4" type="cond" truecount="6" falsecount="0"/>
       <line num="29" count="3" type="stmt"/>
     </file>
-    <file name="User.ts" path="/home/max/workout-api/src/domain/entity/User.ts">
+    <file name="User.ts" path="/home/max/workout-api/src/Domain/Entity/User.ts">
       <metrics statements="22" coveredstatements="22" conditionals="10" coveredconditionals="10" methods="4" coveredmethods="4"/>
-      <line num="1" count="13" type="stmt"/>
-      <line num="8" count="11" type="stmt"/>
-      <line num="9" count="11" type="stmt"/>
-      <line num="10" count="11" type="stmt"/>
-      <line num="12" count="11" type="stmt"/>
-      <line num="16" count="11" type="stmt"/>
-      <line num="17" count="8" type="stmt"/>
-      <line num="21" count="11" type="stmt"/>
-      <line num="22" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="1" count="14" type="stmt"/>
+      <line num="8" count="12" type="stmt"/>
+      <line num="9" count="12" type="stmt"/>
+      <line num="10" count="12" type="stmt"/>
+      <line num="12" count="12" type="stmt"/>
+      <line num="16" count="12" type="stmt"/>
+      <line num="17" count="9" type="stmt"/>
+      <line num="21" count="12" type="stmt"/>
+      <line num="22" count="12" type="cond" truecount="2" falsecount="0"/>
       <line num="23" count="3" type="stmt"/>
-      <line num="28" count="8" type="stmt"/>
-      <line num="29" count="8" type="stmt"/>
-      <line num="30" count="8" type="stmt"/>
-      <line num="31" count="8" type="stmt"/>
-      <line num="32" count="8" type="cond" truecount="2" falsecount="0"/>
+      <line num="28" count="9" type="stmt"/>
+      <line num="29" count="9" type="stmt"/>
+      <line num="30" count="9" type="stmt"/>
+      <line num="31" count="9" type="stmt"/>
+      <line num="32" count="9" type="cond" truecount="2" falsecount="0"/>
       <line num="33" count="1" type="stmt"/>
-      <line num="35" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="35" count="8" type="cond" truecount="2" falsecount="0"/>
       <line num="36" count="1" type="stmt"/>
-      <line num="38" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="38" count="7" type="cond" truecount="2" falsecount="0"/>
       <line num="39" count="1" type="stmt"/>
-      <line num="41" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="41" count="6" type="cond" truecount="2" falsecount="0"/>
       <line num="42" count="1" type="stmt"/>
+    </file>
+    <file name="WorkoutSession.ts" path="/home/max/workout-api/src/Domain/Entity/WorkoutSession.ts">
+      <metrics statements="9" coveredstatements="9" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+      <line num="4" count="7" type="stmt"/>
+      <line num="11" count="4" type="stmt"/>
+      <line num="12" count="4" type="stmt"/>
+      <line num="13" count="4" type="stmt"/>
+      <line num="14" count="4" type="stmt"/>
+      <line num="16" count="4" type="stmt"/>
+      <line num="20" count="4" type="stmt"/>
+      <line num="24" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="25" count="1" type="stmt"/>
+    </file>
+    <file name="WorkoutTemplate.ts" path="/home/max/workout-api/src/Domain/Entity/WorkoutTemplate.ts">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

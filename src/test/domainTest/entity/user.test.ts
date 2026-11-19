@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entity/User"
+import { User } from "../../../Domain/Entity/User"
 
 test("Validation d'email valide 'max+test@gmail.com'", () => {
     expect(new User("Max", "max+test@gmail.com", "P@ssword1234")).toBeInstanceOf(User)
