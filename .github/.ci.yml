@@ -2,12 +2,7 @@ name: Run Jest Tests
 
 on:
   push:
-    branches:
-      - main  # Run on push to the 'main' branch
-  pull_request:
-    branches:
-      - main  # Run on pull requests targeting 'main' branch
-
+  
 jobs:
   test:
     runs-on: ubuntu-latest  # Run on the latest Ubuntu runner
