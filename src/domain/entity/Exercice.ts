@@ -1,17 +1,20 @@
+import { Muscle } from "./Muscle";
+import { User } from "./User";
+
 export class Exercice {
   name: string;
-  muscle_1_id: number;
-  muscle_2_id?: number;
-  muscle_3_id?: number;
-  user_id: number;
+  muscle_1: Muscle;
+  muscle_2: Muscle | undefined;
+  muscle_3: Muscle | undefined;
+  user: User;
   is_public: boolean;
 
-  constructor(name : string, muscle_1_id : number, muscle_2_id : number, muscle_3_id : number, user_id : number, is_public : boolean){
+  constructor(name : string, muscle_1 : Muscle, muscle_2 : Muscle | undefined, muscle_3 : Muscle | undefined, user : User, is_public : boolean){
     this.name = name
-    this.muscle_1_id = muscle_1_id
-    this.muscle_2_id = muscle_2_id
-    this.muscle_3_id = muscle_3_id
-    this.user_id = user_id
+    this.muscle_1 = muscle_1
+    this.muscle_2 = muscle_2
+    this.muscle_3 = muscle_3
+    this.user = user
     this.is_public = is_public
     
     this.validate()
@@ -22,7 +25,7 @@ export class Exercice {
   }
 
   checkIndividualMuscle(): void{
-    if((this.muscle_1_id === this.muscle_2_id) || (this.muscle_3_id === this.muscle_2_id) || (this.muscle_1_id === this.muscle_3_id)){
+    if((this.muscle_2 != undefined || this.muscle_3 != undefined) && (this.muscle_1.id === this.muscle_2?.id) || (this.muscle_3?.id === this.muscle_2?.id) || (this.muscle_1.id === this.muscle_3?.id)){
       throw new Error("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice")
     }
   }
