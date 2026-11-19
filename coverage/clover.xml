@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1795098848471" clover="3.2.0">
-  <project timestamp="1795098848471" name="All files">
+<coverage generated="1795098945038" clover="3.2.0">
+  <project timestamp="1795098945039" name="All files">
     <metrics statements="47" coveredstatements="47" conditionals="23" coveredconditionals="23" methods="11" coveredmethods="11" elements="81" coveredelements="81" complexity="0" loc="47" ncloc="47" packages="1" files="4" classes="4"/>
     <file name="Exercice.ts" path="/home/max/workout-api/src/domain/entity/Exercice.ts">
       <metrics statements="11" coveredstatements="11" conditionals="7" coveredconditionals="7" methods="3" coveredmethods="3"/>
