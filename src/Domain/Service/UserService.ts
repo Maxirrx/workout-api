@@ -1,18 +1,18 @@
 import { User } from "../Entity/User";
-import { UserServiceInterface } from "../Port/Out/Service/UserServiceInterface";
+import { IUserService } from "../Port/Out/Service/IUserService";
 
 export class UserService{
-    userServiceInterface: UserServiceInterface
+    IUserService: IUserService
 
-    constructor(userServiceInterface : UserServiceInterface){
-        this.userServiceInterface = userServiceInterface
+    constructor(IUserService : IUserService){
+        this.IUserService = IUserService
     }
 
     canCreateUser(user : User): void{
-        if(this.userServiceInterface.isExistEmail(user.email)){
+        if(this.IUserService.isExistEmail(user.email)){
             throw new Error("Il existe déjà un compte qui utilise cette adresse email")
         }
-        else if(this.userServiceInterface.isExistName(user.name)){
+        else if(this.IUserService.isExistName(user.name)){
             throw new Error("Il existe déjà un compte qui utilise ce nom")
         }
     }

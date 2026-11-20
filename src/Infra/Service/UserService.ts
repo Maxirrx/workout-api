@@ -1,15 +1,15 @@
-import { UserServiceInterface } from "../../Domain/Port/Out/Service/UserServiceInterface";
-import { UserRepositoryInterface } from "../Repository/UserRepository";
+import { IUserService } from "../../Domain/Port/Out/Service/IUserService";
+import { IUserRepository } from "../Repository/UserRepository";
 
-export class UserService implements UserServiceInterface{
-    userRepository : UserRepositoryInterface
+export class UserService implements IUserService{
+    IUserRepository : IUserRepository
 
-    constructor(userRepository : UserRepositoryInterface){
-        this.userRepository = userRepository
+    constructor(IUserRepository : IUserRepository){
+        this.IUserRepository = IUserRepository
     }
 
     isExistEmail(email : string): boolean {
-        const user = this.userRepository.findByEmail(email)
+        const user = this.IUserRepository.findByEmail(email)
         if(user === undefined){
             return true
         }
@@ -17,7 +17,7 @@ export class UserService implements UserServiceInterface{
     }
 
     isExistName(name : string): boolean {
-        const user = this.userRepository.findByName(name)
+        const user = this.IUserRepository.findByName(name)
         if(user === undefined){
             return true
         }
