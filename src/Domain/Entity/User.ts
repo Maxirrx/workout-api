@@ -14,7 +14,6 @@ export class User {
 
   validate(): void {
     this.checkEmail()
-    this.checkPassword()
   }
   
   checkEmail(): void {
@@ -41,5 +40,9 @@ export class User {
     else if(!checkSpecialCharacterReg.test(this.password)){
       throw new Error("Mot de passe pas dois contenir au moin un caractère spécial")
     }
-  }
+  }  
+}
+
+export function makeUserFaker(): User{
+  return new User("Max", "max+test@gmail.com", "P@ssword1234")
 }

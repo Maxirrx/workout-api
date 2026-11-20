@@ -2,10 +2,10 @@ const { Pool } = require('pg');
 
 export const pool = new Pool({
   host: 'localhost',
-  port: 5432,
-  user: 'postgres',
-  password: 'your_password',
-  database: 'my_app_db',
+  port: 5433,
+  user: 'dev',
+  password: 'dev',
+  database: 'workout-api',
   // --- Pooling-specific configuration ---
   max: 20,                     // Maximum number of clients in the pool
   min: 4,                      // Minimum number of clients kept alive

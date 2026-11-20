@@ -1,3 +1,5 @@
+import { randomInt } from "crypto"
+
 export class Muscle {
     id : number
     name : string
@@ -6,4 +8,8 @@ export class Muscle {
         this.id = id
         this.name = name
     }
+}
+
+export function makeMuscleFaker(id: number): Muscle{
+    return new Muscle(id, "Biceps") 
 }

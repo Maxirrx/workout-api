@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres-workout-api
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: workout-api
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/Data/Sql/Migration/migration_1.sql:/docker-entrypoint-initdb.d/01-migration.sql:ro
+      - ./src/Data/Sql/Fixtures/fixtures.sql:/docker-entrypoint-initdb.d/02-fixtures.sql:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d workout-api"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:

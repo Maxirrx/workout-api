@@ -1,0 +1,14 @@
+import "reflect-metadata";
+import { container } from "tsyringe";
+import { userRepository } from "../Repository/UserRepository";
+import { UserService } from "../Service/UserService";
+import { DUserService } from "../../Domain/Service/DUserService";
+
+container.register<userRepository>("IUserRepository", {
+  useClass: userRepository
+});
+
+container.register<UserService>("UserService", {
+  useClass: UserService
+});
+

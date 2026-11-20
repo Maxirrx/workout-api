@@ -1,5 +1,5 @@
-import { Muscle } from "./Muscle";
-import { User } from "./User";
+import { makeMuscleFaker, Muscle } from "./Muscle";
+import { makeUserFaker, User } from "./User";
 
 export class Exercice {
   name: string;
@@ -29,5 +29,14 @@ export class Exercice {
       throw new Error("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice")
     }
   }
+}
 
+export function makeExerciceFaker(): Exercice{
+  
+  const muscle1 = makeMuscleFaker(1)
+  const muscle2 = makeMuscleFaker(2)
+  const muscle3 = makeMuscleFaker(3)
+
+  const user = makeUserFaker()
+  return new Exercice("Curl Marteau", muscle1, muscle2, muscle3, user, false)
 }

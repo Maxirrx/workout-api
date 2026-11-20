@@ -1,9 +1,9 @@
-import { User } from "../../../Domain/Entity/User"
+import { makeUserFaker } from "../../../Domain/Entity/User"
 import { WorkoutSession } from "../../../Domain/Entity/WorkoutSession"
-import { WorkoutTemplate } from "../../../Domain/Entity/WorkoutTemplate"
+import { makeWorkoutTemplateFaker, WorkoutTemplate } from "../../../Domain/Entity/WorkoutTemplate"
 
-const user = new User("Max", "max+test@gmail.com", "P@ssword1234")
-const workout_template = new WorkoutTemplate(1, "PUSH", user, false)
+const user = makeUserFaker()
+const workout_template = makeWorkoutTemplateFaker()
 
 test("Workout Session valide pas terminé", () =>{
     expect(new WorkoutSession(user, workout_template, new Date(2005, 3, 23), false)).toBeInstanceOf(WorkoutSession)

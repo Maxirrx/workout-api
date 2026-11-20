@@ -1,8 +1,8 @@
-import { User } from "../../../Domain/Entity/User"
+import { makeUserFaker, User } from "../../../Domain/Entity/User"
 import { WorkoutTemplate } from "../../../Domain/Entity/WorkoutTemplate"
-import { WorkoutTemplateService } from "../../../Domain/Service/WorkoutTemplateService"
+import { WorkoutTemplateService } from "../../../Domain/Service/DWorkoutTemplateService"
 
-const user = new User("Max", "max+test@gmail.com", "P@ssword1234")
+const user = makeUserFaker()
 
 const workoutTemplateService = new WorkoutTemplateService()
 

@@ -1,4 +1,4 @@
-import { User } from "./User"
+import { makeUserFaker, User } from "./User"
 
 export class WorkoutTemplate {
     id : number
@@ -12,4 +12,11 @@ export class WorkoutTemplate {
         this.user = user
         this.is_public = is_public
     }
+}
+
+export function makeWorkoutTemplateFaker(): WorkoutTemplate{
+
+    const user = makeUserFaker()
+
+    return new WorkoutTemplate(1, "PUSH", user, false)
 }

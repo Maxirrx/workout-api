@@ -1,11 +1,11 @@
 import { Exercice } from "../../../Domain/Entity/Exercice"
-import { Muscle } from "../../../Domain/Entity/Muscle"
-import { User } from "../../../Domain/Entity/User"
+import { makeMuscleFaker, Muscle } from "../../../Domain/Entity/Muscle"
+import { makeUserFaker, User } from "../../../Domain/Entity/User"
 
-const muscle1 = new Muscle(1, "Biceps")
-const muscle2 = new Muscle(2, "Triceps")
-const muscle3 = new Muscle(3, "Pec")
-const user = new User("Max", "max+test@gmail.com", "P@ssword1234")
+const muscle1 = makeMuscleFaker(1)
+const muscle2 = makeMuscleFaker(2)
+const muscle3 = makeMuscleFaker(3)
+const user = makeUserFaker()
 
 test("Test ajout exercice valide avec 3 muscles", () => {
     expect(new Exercice("Curl Marteau", muscle1, muscle2, muscle3, user, false)).toBeInstanceOf(Exercice)
