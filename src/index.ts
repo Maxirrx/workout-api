@@ -1,4 +1,5 @@
 import express from 'express';
+import { checkSwearWord } from './Utils/checkSwearWord';
 
 const app = express();
 const port = 3000;

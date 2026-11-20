@@ -25,7 +25,7 @@ export class Exercice {
   }
 
   checkIndividualMuscle(): void{
-    if((this.muscle_2 != undefined || this.muscle_3 != undefined) && (this.muscle_1.id === this.muscle_2?.id) || (this.muscle_3?.id === this.muscle_2?.id) || (this.muscle_1.id === this.muscle_3?.id)){
+    if((this.muscle_1.id === this.muscle_2?.id) || (this.muscle_3?.id != undefined && this.muscle_2?.id != undefined && this.muscle_3?.id === this.muscle_2?.id) || (this.muscle_1.id === this.muscle_3?.id)){
       throw new Error("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice")
     }
   }

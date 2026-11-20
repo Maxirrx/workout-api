@@ -7,8 +7,16 @@ const muscle2 = new Muscle(2, "Triceps")
 const muscle3 = new Muscle(3, "Pec")
 const user = new User("Max", "max+test@gmail.com", "P@ssword1234")
 
-test("Test ajout exercice valide", () => {
+test("Test ajout exercice valide avec 3 muscles", () => {
     expect(new Exercice("Curl Marteau", muscle1, muscle2, muscle3, user, false)).toBeInstanceOf(Exercice)
+})
+
+test("Test ajout exercice valide avec 2 muscles", () => {
+    expect(new Exercice("Curl Marteau", muscle1, muscle2, undefined, user, false)).toBeInstanceOf(Exercice)
+})
+
+test("Test ajout exercice valide avec un seul muscle", () => {
+    expect(new Exercice("Curl Marteau", muscle1, undefined, undefined, user, false)).toBeInstanceOf(Exercice)
 })
 
 test("Test ajout exercice invalide doublons muscle 1 et 2", () => {
