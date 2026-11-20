@@ -1,4 +1,3 @@
-import { Muscle } from "../../../Domain/Entity/Muscle"
 import { User } from "../../../Domain/Entity/User"
 import { WorkoutTemplate } from "../../../Domain/Entity/WorkoutTemplate"
 import { WorkoutTemplateService } from "../../../Domain/Service/WorkoutTemplateService"
