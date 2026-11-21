@@ -1,13 +1,19 @@
 export class User {
+  id: number
   name: string;
   email: string;
   password: string;
+  is_public: boolean;
+  is_enable: boolean
   email_verified_at?: Date | null;
 
-  constructor(name: string, email: string, password: string) {
+  constructor(id: number ,name: string, email: string, password: string, is_public: boolean, is_enable: boolean) {
+    this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
+    this.is_public = is_public;
+    this.is_enable = is_enable;
 
     this.validate();
   }
@@ -41,5 +47,5 @@ export class User {
 }
 
 export function makeUserFaker(): User {
-  return new User("Max", "max+test@gmail.com", "P@ssword1234");
+  return new User(1, "Max", "max+test@gmail.com", "P@ssword1234", false, true);
 }

@@ -6,4 +6,8 @@ export abstract class IUserRepository {
   abstract findById(name: string): Promise<User | undefined>;
   abstract findAll(): Promise<User[] | undefined>;
   abstract create(user: User): Promise<User>;
+  abstract update(user: User): Promise<User>;
+  abstract delete(id: number): Promise<boolean>;
+  abstract disable(id: number): Promise<boolean>;
+  abstract enable(id: number): Promise<boolean>;
 }

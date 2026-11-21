@@ -9,14 +9,14 @@ export class UserController {
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, is_public, is_enable } = req.body;
 
       if (typeof name !== "string" || typeof email !== "string" || typeof password !== "string") {
         res.status(400).json({ error: "Données utilisateur invalides" });
         return;
       }
 
-      const user = new User(name, email, password);
+      const user = new User(1, name, email, password, is_public, is_enable);
 
       const createdUser = await this.userService.create(user);
 
@@ -72,6 +72,79 @@ export class UserController {
       const exists = await this.userService.findByID(id);
 
       res.status(200).json({ exists });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  findAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const exists = await this.userService.findAll();
+
+      res.status(200).json({ exists });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const user = req.body;
+
+      const updatedUser = await this.userService.update(user);
+
+      res.status(200).json({ user: updatedUser });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = req.params.id;
+
+      if (typeof id !== "string") {
+        res.status(400).json({ error: "id invalide" });
+        return;
+      }
+
+      const deleted = await this.userService.delete(id);
+
+      res.status(deleted ? 200 : 404).json({ deleted });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  disable = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = req.params.id;
+
+      if (typeof id !== "string") {
+        res.status(400).json({ error: "id invalide" });
+        return;
+      }
+
+      const disabled = await this.userService.disable(id);
+
+      res.status(disabled ? 200 : 404).json({ disabled });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  enable = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = req.params.id;
+
+      if (typeof id !== "string") {
+        res.status(400).json({ error: "id invalide" });
+        return;
+      }
+
+      const enabled = await this.userService.enable(id);
+
+      res.status(enabled ? 200 : 404).json({ enabled });
     } catch (error) {
       next(error);
     }

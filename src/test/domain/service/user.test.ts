@@ -57,30 +57,30 @@ describe("DUserService - canCreateUser", () => {
   test("Accepte un mot de passe valide", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "P@ssword1234"))).resolves.toBeUndefined();
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "P@ssword1234", true, true))).resolves.toBeUndefined();
   });
 
   test("Refuse un mot de passe trop court", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "password"))).rejects.toThrow("Mot de passe pas dois contenir au moin 12 caractère");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "password", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin 12 caractère");
   });
 
   test("Refuse un mot de passe sans majuscule", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "password1234"))).rejects.toThrow("Mot de passe pas dois contenir au moin une majuscule");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "password1234", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin une majuscule");
   });
 
   test("Refuse un mot de passe sans chiffre", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "Passworddddddddd"))).rejects.toThrow("Mot de passe pas dois contenir au moin un chiffre");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "Passworddddddddd", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin un chiffre");
   });
 
   test("Refuse un mot de passe sans caractère spécial", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "Password1234"))).rejects.toThrow("Mot de passe pas dois contenir au moin un caractère spécial");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "Password1234", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin un caractère spécial");
   });
 });

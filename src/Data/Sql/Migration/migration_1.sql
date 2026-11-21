@@ -5,6 +5,8 @@ CREATE TABLE users (
     name TEXT NOT NULL CHECK (btrim(name) <> ''),
     email TEXT NOT NULL CHECK (btrim(email) <> ''),
     password TEXT NOT NULL CHECK (password <> ''),
+    is_public BOOLEAN NOT NULL DEFAULT FALSE,
+    is_enable BOOLEAN NOT NULL DEFAULT TRUE,
     email_verified_at TIMESTAMPTZ
 );
 
