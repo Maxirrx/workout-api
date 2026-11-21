@@ -1,22 +1,21 @@
-import { makeUserFaker, User } from "./User"
+import { makeUserFaker, User } from "./User";
 
 export class WorkoutTemplate {
-    id : number
-    name : string
-    user : User
-    is_public : boolean
+  id: number;
+  name: string;
+  user: User;
+  is_public: boolean;
 
-    constructor(id: number, name : string, user : User, is_public : boolean){
-        this.id = id
-        this.name = name
-        this.user = user
-        this.is_public = is_public
-    }
+  constructor(id: number, name: string, user: User, is_public: boolean) {
+    this.id = id;
+    this.name = name;
+    this.user = user;
+    this.is_public = is_public;
+  }
 }
 
-export function makeWorkoutTemplateFaker(): WorkoutTemplate{
+export function makeWorkoutTemplateFaker(): WorkoutTemplate {
+  const user = makeUserFaker();
 
-    const user = makeUserFaker()
-
-    return new WorkoutTemplate(1, "PUSH", user, false)
+  return new WorkoutTemplate(1, "PUSH", user, false);
 }

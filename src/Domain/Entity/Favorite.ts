@@ -1,2 +1,1 @@
-export class Favorite {
-}
+export class Favorite {}
