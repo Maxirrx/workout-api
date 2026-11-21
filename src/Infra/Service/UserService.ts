@@ -12,22 +12,6 @@ export class UserService implements IUserService {
     private readonly dUserService: DUserService
   ) {}
 
-  isExistEmail(email: string): boolean {
-    const user = this.IUserRepository.findByEmail(email);
-    if (user === undefined) {
-      return false;
-    }
-    return true;
-  }
-
-  isExistName(name: string): boolean {
-    const user = this.IUserRepository.findByName(name);
-    if (user === undefined) {
-      return false;
-    }
-    return true;
-  }
-
   async create(user: User): Promise<User> {
     await this.dUserService.canCreateUser(user);
     return this.IUserRepository.create(user);

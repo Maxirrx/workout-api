@@ -1,14 +1,20 @@
+import { inject, injectable } from "tsyringe";
 import { User } from "../Entity/User";
-import { IUserService } from "../Port/Out/Service/IUserService";
+import { IUserRepository } from "../Port/Out/Repository/IUserRepository";
 
+@injectable()
 export class DUserService {
-  constructor(private readonly IUserService: IUserService) {}
+  
+  constructor(@inject('IUserRepository') private readonly userRepository: IUserRepository) {}
 
-  async canCreateUser(user: User): Promise<void> {
+ async canCreateUser(user: User): Promise<void> {
     user.checkPassword();
-    if (await this.IUserService.isExistEmail(user.email)) {
+
+    if (await this.userRepository.findByEmail(user.email)) {
       throw new Error("Il existe déjà un compte qui utilise cette adresse email");
-    } else if (await this.IUserService.isExistName(user.name)) {
+    }
+
+    if (await this.userRepository.findByName(user.name)) {
       throw new Error("Il existe déjà un compte qui utilise ce nom");
     }
   }

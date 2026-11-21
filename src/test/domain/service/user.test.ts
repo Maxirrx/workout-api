@@ -1,77 +1,86 @@
+import { describe, test, expect, jest } from "@jest/globals";
 import { DUserService } from "../../../Domain/Service/DUserService";
-import { IUserService } from "../../../Domain/Port/Out/Service/IUserService";
 import { makeUserFaker, User } from "../../../Domain/Entity/User";
+import { IUserRepository } from "../../../Infra/Repository/UserRepository";
 
-const user = makeUserFaker();
+function makeMockRepository(overrides: Partial<IUserRepository> = {}): IUserRepository {
+  return {
+    findByEmail: jest.fn<IUserRepository["findByEmail"]>().mockResolvedValue(undefined),
+    findByName: jest.fn<IUserRepository["findByName"]>().mockResolvedValue(undefined),
+    findById: jest.fn<IUserRepository["findById"]>().mockResolvedValue(undefined),
+    findAll: jest.fn<IUserRepository["findAll"]>().mockResolvedValue([]),
+    create: jest.fn<IUserRepository["create"]>().mockImplementation(async (user: User) => user),
+    ...overrides
+  };
+}
 
-test("Test can create user valide", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => false };
+describe("DUserService - canCreateUser", () => {
+  const user = makeUserFaker();
 
-  const service = new DUserService(mockService);
+  test("Peut créer un utilisateur valide", async () => {
+    const repository = makeMockRepository();
+    const service = new DUserService(repository);
 
-  await expect(service.canCreateUser(user));
-});
+    await expect(service.canCreateUser(user)).resolves.toBeUndefined();
+  });
 
-test("Test can create user invalide email déjà existant", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => true, isExistName: (name: string): boolean => false };
+  test("Refuse un email déjà existant", async () => {
+    const repository = makeMockRepository({ findByEmail: jest.fn<IUserRepository["findByEmail"]>().mockResolvedValue(user) });
 
-  const service = new DUserService(mockService);
+    const service = new DUserService(repository);
 
-  await expect(() => service.canCreateUser(user)).rejects.toThrow("Il existe déjà un compte qui utilise cette adresse email");
-});
+    await expect(service.canCreateUser(user)).rejects.toThrow("Il existe déjà un compte qui utilise cette adresse email");
+  });
 
-test("Test can create user invalide name déjà existant", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => true };
+  test("Refuse un nom déjà existant", async () => {
+    const repository = makeMockRepository({ findByName: jest.fn<IUserRepository["findByName"]>().mockResolvedValue(user) });
 
-  const service = new DUserService(mockService);
+    const service = new DUserService(repository);
 
-  await expect(() => service.canCreateUser(user)).rejects.toThrow("Il existe déjà un compte qui utilise ce nom");
-});
+    await expect(service.canCreateUser(user)).rejects.toThrow("Il existe déjà un compte qui utilise ce nom");
+  });
 
-test("Test can create user invalide email et name déjà existants", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => true, isExistName: (name: string): boolean => true };
+  test("Refuse un email et un nom déjà existants", async () => {
+    const repository = makeMockRepository({
+      findByEmail: jest.fn<IUserRepository["findByEmail"]>().mockResolvedValue(user),
 
-  const service = new DUserService(mockService);
+      findByName: jest.fn<IUserRepository["findByName"]>().mockResolvedValue(user)
+    });
 
-  await expect(() => service.canCreateUser(user)).rejects.toThrow("Il existe déjà un compte qui utilise cette adresse email");
-});
+    const service = new DUserService(repository);
 
-test("Validation de mot de passe valide 'P@ssword1234'", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => false };
+    await expect(service.canCreateUser(user)).rejects.toThrow("Il existe déjà un compte qui utilise cette adresse email");
 
-  const service = new DUserService(mockService);
+    expect(repository.findByName).not.toHaveBeenCalled();
+  });
 
-  await expect(() => service.canCreateUser(new User("Max", "max+test@gmail.com", "P@ssword1234")));
-});
+  test("Accepte un mot de passe valide", async () => {
+    const service = new DUserService(makeMockRepository());
 
-test("Validation de mot de passe invalide trop court 11 caractere 'password123'", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => false };
+    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "P@ssword1234"))).resolves.toBeUndefined();
+  });
 
-  const service = new DUserService(mockService);
+  test("Refuse un mot de passe trop court", async () => {
+    const service = new DUserService(makeMockRepository());
 
-  await expect(() => service.canCreateUser(new User("Max", "max+test@gmail.com", "password"))).rejects.toThrow("Mot de passe pas dois contenir au moin 12 caractère");
-});
+    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "password"))).rejects.toThrow("Mot de passe pas dois contenir au moin 12 caractère");
+  });
 
-test("Validation de mot de passe invalide car pas de Maj 'password1234'", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => false };
+  test("Refuse un mot de passe sans majuscule", async () => {
+    const service = new DUserService(makeMockRepository());
 
-  const service = new DUserService(mockService);
+    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "password1234"))).rejects.toThrow("Mot de passe pas dois contenir au moin une majuscule");
+  });
 
-  await expect(() => service.canCreateUser(new User("Max", "max+test@gmail.com", "password1234"))).rejects.toThrow("Mot de passe pas dois contenir au moin une majuscule");
-});
+  test("Refuse un mot de passe sans chiffre", async () => {
+    const service = new DUserService(makeMockRepository());
 
-test("Validation de mot de passe invalide car pas de chiffre 'passworddddddddd'", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => false };
+    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "Passworddddddddd"))).rejects.toThrow("Mot de passe pas dois contenir au moin un chiffre");
+  });
 
-  const service = new DUserService(mockService);
+  test("Refuse un mot de passe sans caractère spécial", async () => {
+    const service = new DUserService(makeMockRepository());
 
-  await expect(() => service.canCreateUser(new User("Max", "max+test@gmail.com", "Passworddddddddd"))).rejects.toThrow("Mot de passe pas dois contenir au moin un chiffre");
-});
-
-test("Validation de mot de passe invalide car pas de caracteres spéciaux 'Password1234'", async () => {
-  const mockService: IUserService = { isExistEmail: (email: string): boolean => false, isExistName: (name: string): boolean => false };
-
-  const service = new DUserService(mockService);
-
-  await expect(() => service.canCreateUser(new User("Max", "max+test@gmail.com", "Password1234"))).rejects.toThrow("Mot de passe pas dois contenir au moin un caractère spécial");
+    await expect(service.canCreateUser(new User("Max", "max+test@gmail.com", "Password1234"))).rejects.toThrow("Mot de passe pas dois contenir au moin un caractère spécial");
+  });
 });
