@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "esModuleInterop": true,
     "target": "es6",
     "lib": ["es2015"],
@@ -9,10 +9,8 @@
     "outDir": "./build",
     "rootDir": "./src",
     "types": ["jest", "node"],
-
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-
     "strict": true
   },
   "include": ["src/**/*"],

@@ -47,7 +47,6 @@ CREATE INDEX workout_templates_user_id_idx ON workout_templates(user_id);
 CREATE TABLE workout_template_exercises (
     workout_template_id BIGINT NOT NULL REFERENCES workout_templates(id) ON DELETE CASCADE,
     exercise_id BIGINT NOT NULL REFERENCES exercises(id) ON DELETE RESTRICT,
-    position INTEGER NOT NULL CHECK (position > 0),
     PRIMARY KEY (workout_template_id, position),
     UNIQUE (workout_template_id, exercise_id)
 );

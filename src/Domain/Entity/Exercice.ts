@@ -2,7 +2,7 @@ import { makeMuscleFaker, Muscle } from "./Muscle";
 import { makeUserFaker, User } from "./User";
 
 export class Exercice {
-  id: number
+  id: number;
   name: string;
   muscle_1: Muscle;
   muscle_2: Muscle | undefined;
@@ -10,7 +10,7 @@ export class Exercice {
   user: User;
   is_public: boolean;
 
-  constructor(id : number, name: string, muscle_1: Muscle, muscle_2: Muscle | undefined, muscle_3: Muscle | undefined, user: User, is_public: boolean) {
+  constructor(id: number, name: string, muscle_1: Muscle, muscle_2: Muscle | undefined, muscle_3: Muscle | undefined, user: User, is_public: boolean) {
     this.id = id;
     this.name = name;
     this.muscle_1 = muscle_1;
@@ -43,5 +43,5 @@ export function makeExerciceFaker(): Exercice {
   const muscle3 = makeMuscleFaker(3);
 
   const user = makeUserFaker();
-  return new Exercice(1,"Curl Marteau", muscle1, muscle2, muscle3, user, false);
+  return new Exercice(1, "Curl Marteau", muscle1, muscle2, muscle3, user, false);
 }

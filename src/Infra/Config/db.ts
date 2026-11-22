@@ -1,14 +1,14 @@
 const { Pool } = require("pg");
+import "dotenv/config";
 
 export const pool = new Pool({
-  host: "localhost",
-  port: 5433,
-  user: "dev",
-  password: "dev",
-  database: "workout-api",
-  // --- Pooling-specific configuration ---
-  max: 20, // Maximum number of clients in the pool
-  min: 4, // Minimum number of clients kept alive
-  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 5000 // Error if a connection can't be acquired in 5s
+  host: process.env["DB_HOST"],
+  port: Number(process.env["DB_PORT"]),
+  user: process.env["DB_USER"],
+  password: process.env["DB_PASSWORD"],
+  database: process.env["DB_NAME"],
+  max: 20, 
+  min: 4,
+  idleTimeoutMillis: 30000, 
+  connectionTimeoutMillis: 5000
 });
