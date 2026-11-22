@@ -23,28 +23,22 @@ jobs:
 
         run: |
           set -e
-
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-          cp .github/ssh/known_hosts ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
-          ssh -i ~/.ssh/id_ed25519 \
+          ssh -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -i ~/.ssh/id_ed25519 \
             -p "$SSH_PORT" \
             "$SSH_USER@$SSH_HOST" \
             bash -se -- "$RELEASE_TAG" <<'EOF'
             set -e
-
             TAG="$1"
-
             cd /opt/postgres-workout-api
-
             git fetch origin --tags
             git checkout --detach "refs/tags/$TAG"
-
             docker compose up -d --build --no-deps postgres-workout-api
           EOF
