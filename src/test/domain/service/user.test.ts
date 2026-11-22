@@ -1,7 +1,7 @@
 import { describe, test, expect, jest } from "@jest/globals";
 import { DUserService } from "../../../Domain/Service/DUserService";
 import { makeUserFaker, User } from "../../../Domain/Entity/User";
-import { IUserRepository } from "../../../Infra/Repository/UserRepository";
+import { IUserRepository } from "../../../Domain/Port/Out/Repository/IUserRepository";
 
 function makeMockRepository(overrides: Partial<IUserRepository> = {}): IUserRepository {
   return {
@@ -10,6 +10,10 @@ function makeMockRepository(overrides: Partial<IUserRepository> = {}): IUserRepo
     findById: jest.fn<IUserRepository["findById"]>().mockResolvedValue(undefined),
     findAll: jest.fn<IUserRepository["findAll"]>().mockResolvedValue([]),
     create: jest.fn<IUserRepository["create"]>().mockImplementation(async (user: User) => user),
+    update: jest.fn<IUserRepository["update"]>().mockImplementation(async (user: User) => user),
+    delete: jest.fn<IUserRepository["delete"]>().mockResolvedValue(true),
+    disable: jest.fn<IUserRepository["disable"]>().mockResolvedValue(true),
+    enable: jest.fn<IUserRepository["enable"]>().mockResolvedValue(true),
     ...overrides
   };
 }
@@ -69,18 +73,24 @@ describe("DUserService - canCreateUser", () => {
   test("Refuse un mot de passe sans majuscule", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "password1234", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin une majuscule");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "password1234", true, true))).rejects.toThrow(
+      "Mot de passe pas dois contenir au moin une majuscule"
+    );
   });
 
   test("Refuse un mot de passe sans chiffre", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "Passworddddddddd", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin un chiffre");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "Passworddddddddd", true, true))).rejects.toThrow(
+      "Mot de passe pas dois contenir au moin un chiffre"
+    );
   });
 
   test("Refuse un mot de passe sans caractère spécial", async () => {
     const service = new DUserService(makeMockRepository());
 
-    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "Password1234", true, true))).rejects.toThrow("Mot de passe pas dois contenir au moin un caractère spécial");
+    await expect(service.canCreateUser(new User(1, "Max", "max+test@gmail.com", "Password1234", true, true))).rejects.toThrow(
+      "Mot de passe pas dois contenir au moin un caractère spécial"
+    );
   });
 });

@@ -57,8 +57,8 @@ export class ExerciceRepository implements IExerciceRepository {
           row.id,
           row.name,
           new Muscle(row.muscle_1_id, row.muscle_1_name),
-          row.muscle_2_id ? new Muscle(row.muscle_2_id, row.muscle_2_name) : undefined,
-          row.muscle_3_id ? new Muscle(row.muscle_3_id, row.muscle_3_name) : undefined,
+          row.muscle_2_id ? new Muscle(row.muscle_2_id, row.muscle_2_name!) : undefined,
+          row.muscle_3_id ? new Muscle(row.muscle_3_id, row.muscle_3_name!) : undefined,
           new User(row.user_id, row.user_name, row.user_email, row.user_password, row.user_is_public, row.user_is_enable),
           row.is_public
         );

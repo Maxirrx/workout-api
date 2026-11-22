@@ -51,12 +51,12 @@ describe("UserService", () => {
   test("findByID - utilisateur trouvé", async () => {
     repository.findById.mockResolvedValue(user);
 
-    await expect(service.findByID("1")).resolves.toEqual(user);
-    expect(repository.findById).toHaveBeenCalledWith("1");
+    await expect(service.findByID(1)).resolves.toEqual(user);
+    expect(repository.findById).toHaveBeenCalledWith(1);
   });
 
   test("findByID - utilisateur introuvable", async () => {
-    await expect(service.findByID("999")).resolves.toBeUndefined();
+    await expect(service.findByID(999)).resolves.toBeUndefined();
   });
 
   test("findAll - retourne les utilisateurs", async () => {
@@ -75,36 +75,36 @@ describe("UserService", () => {
   });
 
   test("delete - valide", async () => {
-    await expect(service.delete("1")).resolves.toBe(true);
-    expect(repository.delete).toHaveBeenCalledWith("1");
+    await expect(service.delete(1)).resolves.toBe(true);
+    expect(repository.delete).toHaveBeenCalledWith(1);
   });
 
   test("delete - utilisateur introuvable", async () => {
     repository.delete.mockResolvedValue(false);
 
-    await expect(service.delete("999")).resolves.toBe(false);
+    await expect(service.delete(999)).resolves.toBe(false);
   });
 
   test("disable - valide", async () => {
-    await expect(service.disable("1")).resolves.toBe(true);
-    expect(repository.disable).toHaveBeenCalledWith("1");
+    await expect(service.disable(1)).resolves.toBe(true);
+    expect(repository.disable).toHaveBeenCalledWith(1);
   });
 
   test("disable - utilisateur introuvable", async () => {
     repository.disable.mockResolvedValue(false);
 
-    await expect(service.disable("999")).resolves.toBe(false);
+    await expect(service.disable(999)).resolves.toBe(false);
   });
 
   test("enable - valide", async () => {
-    await expect(service.enable("1")).resolves.toBe(true);
-    expect(repository.enable).toHaveBeenCalledWith("1");
+    await expect(service.enable(1)).resolves.toBe(true);
+    expect(repository.enable).toHaveBeenCalledWith(1);
   });
 
   test("enable - utilisateur introuvable", async () => {
     repository.enable.mockResolvedValue(false);
 
-    await expect(service.enable("999")).resolves.toBe(false);
+    await expect(service.enable(999)).resolves.toBe(false);
   });
 
   test("update - erreur repository", async () => {
@@ -116,6 +116,6 @@ describe("UserService", () => {
   test("delete - erreur repository", async () => {
     repository.delete.mockRejectedValue(new Error("Database error"));
 
-    await expect(service.delete("1")).rejects.toThrow("Database error");
+    await expect(service.delete(1)).rejects.toThrow("Database error");
   });
 });

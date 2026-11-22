@@ -10,11 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Deploy via SSH
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          SSH_USER: ${{ vars.SERVER_SSH_USER }}
+          SSH_HOST: ${{ vars.SERVER_HOST }}
+          SSH_PORT: 23117
           RELEASE_TAG: ${{ github.event.release.tag_name }}
+
         run: |
+          set -e
+
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
@@ -24,12 +33,16 @@ jobs:
           cp .github/ssh/known_hosts ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
-          ssh -i ~/.ssh/id_ed25519 deploy@mon-serveur.fr \
+          ssh -i ~/.ssh/id_ed25519 \
+            -p "$SSH_PORT" \
+            "$SSH_USER@$SSH_HOST" \
             bash -se -- "$RELEASE_TAG" <<'EOF'
             set -e
+
             TAG="$1"
 
             cd /opt/postgres-workout-api
+
             git fetch origin --tags
             git checkout --detach "refs/tags/$TAG"
 

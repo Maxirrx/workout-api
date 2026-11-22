@@ -29,7 +29,7 @@ export class userRepository implements IUserRepository {
     }
   }
 
-  async findById(id: string): Promise<User | undefined> {
+  async findById(id: number): Promise<User | undefined> {
     try {
       const result = await pool.query("Select * from users where id = $1", [id]);
       if (result.rows.length === 0) {

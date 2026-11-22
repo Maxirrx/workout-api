@@ -25,7 +25,7 @@ export class UserService implements IUserService {
     return this.IUserRepository.findByEmail(email);
   }
 
-  async findByID(id: string): Promise<User | undefined> {
+  async findByID(id: number): Promise<User | undefined> {
     return this.IUserRepository.findById(id);
   }
 
@@ -37,15 +37,15 @@ export class UserService implements IUserService {
     return this.IUserRepository.update(user);
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     return this.IUserRepository.delete(id);
   }
 
-  async disable(id: string): Promise<boolean> {
+  async disable(id: number): Promise<boolean> {
     return this.IUserRepository.disable(id);
   }
 
-  async enable(id: string): Promise<boolean> {
+  async enable(id: number): Promise<boolean> {
     return this.IUserRepository.enable(id);
   }
 }

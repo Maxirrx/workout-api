@@ -69,7 +69,7 @@ export class UserController {
         return;
       }
 
-      const exists = await this.userService.findByID(id);
+      const exists = await this.userService.findByID(Number(id));
 
       res.status(200).json({ exists });
     } catch (error) {
@@ -108,7 +108,7 @@ export class UserController {
         return;
       }
 
-      const deleted = await this.userService.delete(id);
+      const deleted = await this.userService.delete(Number(id));
 
       res.status(deleted ? 200 : 404).json({ deleted });
     } catch (error) {
@@ -125,7 +125,7 @@ export class UserController {
         return;
       }
 
-      const disabled = await this.userService.disable(id);
+      const disabled = await this.userService.disable(Number(id));
 
       res.status(disabled ? 200 : 404).json({ disabled });
     } catch (error) {
@@ -142,7 +142,7 @@ export class UserController {
         return;
       }
 
-      const enabled = await this.userService.enable(id);
+      const enabled = await this.userService.enable(Number(id));
 
       res.status(enabled ? 200 : 404).json({ enabled });
     } catch (error) {
