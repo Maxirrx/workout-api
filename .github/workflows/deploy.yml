@@ -37,7 +37,7 @@ jobs:
             bash -se -- "$RELEASE_TAG" <<'EOF'
             set -e
             TAG="$1"
-            cd /opt/postgres-workout-api
+            cd /home/max/workout-api
             git fetch origin --tags
             git checkout --detach "refs/tags/$TAG"
             docker compose up -d --build --no-deps postgres-workout-api
