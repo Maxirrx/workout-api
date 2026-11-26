@@ -38,11 +38,11 @@ export class Exercice {
   }
 }
 
-export function makeExerciceFaker(): Exercice {
-  const muscle1 = makeMuscleFaker(1);
-  const muscle2 = makeMuscleFaker(2);
-  const muscle3 = makeMuscleFaker(3);
+export function makeExerciceFaker(exercice? : Partial<Exercice>): Exercice {
+  const muscle1 = makeMuscleFaker({id: 1});
+  const muscle2 = makeMuscleFaker({id: 2});
+  const muscle3 = makeMuscleFaker({id: 3});
 
   const user = makeUserFaker();
-  return new Exercice(1, "Curl Marteau", muscle1, muscle2, muscle3, user, false);
+  return new Exercice(exercice?.id ?? 1, exercice?.name ?? "Curl Marteau", exercice?.muscle_1 ?? muscle1, exercice?.muscle_2 ?? muscle2, exercice?.muscle_3 ?? muscle3, exercice?.user ?? user, exercice?.is_public ?? false);
 }

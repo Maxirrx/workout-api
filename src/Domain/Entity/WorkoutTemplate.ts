@@ -17,8 +17,8 @@ export class WorkoutTemplate {
   }
 }
 
-export function makeWorkoutTemplateFaker(): WorkoutTemplate {
+export function makeWorkoutTemplateFaker(workoutTemplate? : Partial<WorkoutTemplate>): WorkoutTemplate {
   const user = makeUserFaker();
 
-  return new WorkoutTemplate(1, "PUSH", user, [makeExerciceFaker()], false);
+  return new WorkoutTemplate(workoutTemplate?.id ?? 1, workoutTemplate?.name ?? "PUSH", workoutTemplate?.user ?? user, workoutTemplate?.exercices ?? [makeExerciceFaker()], workoutTemplate?.is_public ?? false);
 }

@@ -1,5 +1,5 @@
 import { ApiError } from "../../Utils/ApiError";
-import { Exercice } from "./Exercice";
+import { Exercice, makeExerciceFaker } from "./Exercice";
 
 export class Performance {
   id: number;
@@ -30,4 +30,11 @@ export class Performance {
       throw new ApiError(400, "Les durées doivent être écrites en secondes entières", "INVALID_DURATION");
     }
   }
+
+}
+
+export function makePerformanceFaker(performance? : Partial<Performance>){
+  const exercice = makeExerciceFaker()
+
+  return new Performance(performance?.id ?? 1, performance?.exercice ?? exercice, performance?.weight ?? 100, performance?.rep ?? 12, performance?.time ?? undefined, performance?.rest ?? undefined)
 }

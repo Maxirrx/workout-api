@@ -48,6 +48,6 @@ export class User {
   }
 }
 
-export function makeUserFaker(): User {
-  return new User(1, "Max", "max+test@gmail.com", "P@ssword1234", false, true);
+export function makeUserFaker(user? : Partial<User>): User {
+  return new User(user?.id ?? 1, user?.name ?? "Max", user?.email ?? "max+test@gmail.com", user?.password ?? "P@ssword1234", user?.is_public ?? false, user?.is_enable ?? true);
 }
