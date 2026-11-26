@@ -18,6 +18,6 @@ test("Workout Session valide peut être planifié dans le future", () => {
 });
 test("Workout Session invalide ne peut pas être terminé dans le future", () => {
   expect(() => new WorkoutSession(user, workout_template, new Date(2222, 3, 23), true)).toThrow(
-    `Vous ne pouvez pas terminer une séance qui est planifié pour le ${new Date(2222, 3, 23).toString()}`
+    `Vous ne pouvez pas terminer une séance planifiée pour le ${new Date(2222, 3, 23).toString()}`
   );
 });

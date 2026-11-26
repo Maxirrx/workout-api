@@ -1,3 +1,4 @@
+import { ApiError } from "../../Utils/ApiError";
 import { User } from "./User";
 import { WorkoutTemplate } from "./WorkoutTemplate";
 
@@ -22,7 +23,7 @@ export class WorkoutSession {
 
   checkDateOfWorkoutForEnd(): void {
     if (this.is_end && this.date_of_workout.getTime() > Date.now()) {
-      throw new Error(`Vous ne pouvez pas terminer une séance qui est planifié pour le ${this.date_of_workout.toString()}`);
+      throw new ApiError(409, `Vous ne pouvez pas terminer une séance planifiée pour le ${this.date_of_workout.toString()}`, "WORKOUT_NOT_YET_STARTED");
     }
   }
 }

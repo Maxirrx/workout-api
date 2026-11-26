@@ -20,21 +20,21 @@ test("Test ajout exercice valide avec un seul muscle", () => {
 });
 
 test("Test ajout exercice invalide doublons muscle 1 et 2", () => {
-  expect(() => new Exercice(1, "Curl Marteau", muscle1, muscle1, muscle3, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice");
+  expect(() => new Exercice(1, "Curl Marteau", muscle1, muscle1, muscle3, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieurs fois sur un exercice");
 });
 
 test("Test ajout exercice invalide doublons muscle 2 et 3", () => {
-  expect(() => new Exercice(1, "Curl Marteau", muscle2, muscle1, muscle1, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice");
+  expect(() => new Exercice(1, "Curl Marteau", muscle2, muscle1, muscle1, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieurs fois sur un exercice");
 });
 
 test("Test ajout exercice invalide triplon muscle", () => {
-  expect(() => new Exercice(1, "Curl Marteau", muscle1, muscle1, muscle1, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice");
+  expect(() => new Exercice(1, "Curl Marteau", muscle1, muscle1, muscle1, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieurs fois sur un exercice");
 });
 
 test("Test ajout exercice invalide doublons muscle plus undefined 2", () => {
-  expect(() => new Exercice(1, "Curl Marteau", muscle1, undefined, muscle1, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice");
+  expect(() => new Exercice(1, "Curl Marteau", muscle1, undefined, muscle1, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieurs fois sur un exercice");
 });
 
 test("Test ajout exercice invalide doublons muscle undefined 3", () => {
-  expect(() => new Exercice(1, "Curl Marteau", muscle1, muscle1, undefined, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice");
+  expect(() => new Exercice(1, "Curl Marteau", muscle1, muscle1, undefined, user, false)).toThrow("Vous ne pouvez pas mettre le même muscle plusieurs fois sur un exercice");
 });

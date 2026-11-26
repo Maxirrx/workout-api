@@ -1,13 +1,15 @@
+import { ApiError } from "../../Utils/ApiError";
+
 export class User {
-  id: number
+  id: number;
   name: string;
   email: string;
   password: string;
   is_public: boolean;
-  is_enable: boolean
+  is_enable: boolean;
   email_verified_at?: Date | null;
 
-  constructor(id: number ,name: string, email: string, password: string, is_public: boolean, is_enable: boolean) {
+  constructor(id: number, name: string, email: string, password: string, is_public: boolean, is_enable: boolean) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -25,23 +27,23 @@ export class User {
   checkEmail(): void {
     const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
     if (!emailReg.test(this.email)) {
-      throw new Error("Email invalide");
+      throw new ApiError(400, "Email invalide", "INVALID_EMAIL");
     }
   }
 
   checkPassword(): void {
-    const minLenght = 12;
+    const minLength = 12;
     const checkMajReg = /[A-Z]/;
     const checkNumbReg = /\d/;
     const checkSpecialCharacterReg = /^(?=.*[!@#$%^&*)(+=._-])[a-zA-Z0-9!@#$%^&*)(+=._-]+$/;
-    if (this.password.length < minLenght) {
-      throw new Error("Mot de passe pas dois contenir au moin 12 caractère");
+    if (this.password.length < minLength) {
+      throw new ApiError(400, "Le mot de passe doit contenir au moins 12 caractères", "PASSWORD_TOO_SHORT");
     } else if (!checkMajReg.test(this.password)) {
-      throw new Error("Mot de passe pas dois contenir au moin une majuscule");
+      throw new ApiError(400, "Le mot de passe doit contenir au moins une majuscule", "PASSWORD_MISSING_UPPERCASE");
     } else if (!checkNumbReg.test(this.password)) {
-      throw new Error("Mot de passe pas dois contenir au moin un chiffre");
+      throw new ApiError(400, "Le mot de passe doit contenir au moins un chiffre", "PASSWORD_MISSING_NUMBER");
     } else if (!checkSpecialCharacterReg.test(this.password)) {
-      throw new Error("Mot de passe pas dois contenir au moin un caractère spécial");
+      throw new ApiError(400, "Le mot de passe doit contenir au moins un caractère spécial", "PASSWORD_MISSING_SPECIAL_CHARACTER");
     }
   }
 }

@@ -3,6 +3,7 @@ import "reflect-metadata";
 import express from "express";
 import { pool } from "./Infra/Config/db";
 import wmRouter from "./Infra/Http/Route/wm/wm";
+import { errorHandler } from "./Utils/errorHandler";
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,8 @@ async function main(): Promise<void> {
     app.listen(PORT, () => {
       console.log(`Serveur démarré sur le port ${PORT}`);
     });
+
+    app.use(errorHandler)
   } catch (error) {
     console.error("Erreur de connexion PostgreSQL :", error);
     process.exit(1);

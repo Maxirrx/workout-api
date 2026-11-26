@@ -1,3 +1,4 @@
+import { ApiError } from "../../Utils/ApiError";
 import { makeMuscleFaker, Muscle } from "./Muscle";
 import { makeUserFaker, User } from "./User";
 
@@ -32,7 +33,7 @@ export class Exercice {
       (this.muscle_3?.id != undefined && this.muscle_2?.id != undefined && this.muscle_3?.id === this.muscle_2?.id) ||
       this.muscle_1.id === this.muscle_3?.id
     ) {
-      throw new Error("Vous ne pouvez pas mettre le même muscle plusieur fois sur un exercice");
+      throw new ApiError(409, "Vous ne pouvez pas mettre le même muscle plusieurs fois sur un exercice", "DUPLICATE_EXERCISE_MUSCLE");
     }
   }
 }

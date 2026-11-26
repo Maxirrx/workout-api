@@ -8,13 +8,13 @@ test("Performance Valide", () => {
 });
 
 test("Performance Invalide duré en float pour time", () => {
-  expect(() => new Performance(1, exercice, 100, 1, 1.1, 1)).toThrow("Les durées doivent être écritent en secondes entières");
+  expect(() => new Performance(1, exercice, 100, 1, 1.1, 1)).toThrow("Les durées doivent être écrites en secondes entières");
 });
 
 test("Performance Invalide duré en float pour les deux", () => {
-  expect(() => new Performance(1, exercice, 100, 1, 1, 1.1)).toThrow("Les durées doivent être écritent en secondes entières");
+  expect(() => new Performance(1, exercice, 100, 1, 1, 1.1)).toThrow("Les durées doivent être écrites en secondes entières");
 });
 
 test("Performance Invalide duré en float pour rest", () => {
-  expect(() => new Performance(1, exercice, 100, 1, 1.1, 1.1)).toThrow("Les durées doivent être écritent en secondes entières");
+  expect(() => new Performance(1, exercice, 100, 1, 1.1, 1.1)).toThrow("Les durées doivent être écrites en secondes entières");
 });

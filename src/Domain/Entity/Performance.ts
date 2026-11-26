@@ -1,3 +1,4 @@
+import { ApiError } from "../../Utils/ApiError";
 import { Exercice } from "./Exercice";
 
 export class Performance {
@@ -26,7 +27,7 @@ export class Performance {
 
   checkTime(): void {
     if ((this.time != undefined && this.time % 1 != 0) || (this.rest != undefined && this.rest % 1 != 0)) {
-      throw new Error("Les durées doivent être écritent en secondes entières");
+      throw new ApiError(400, "Les durées doivent être écrites en secondes entières", "INVALID_DURATION");
     }
   }
 }
