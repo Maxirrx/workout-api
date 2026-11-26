@@ -18,6 +18,12 @@ import { WorkoutTemplateRepository } from "../Repository/WorkoutTemplateReposito
 import { WorkoutTemplateService } from "../Service/WorkoutTemplateService";
 import { WorkoutTemplateController } from "../Http/Controller/WorkoutTemplateController";
 
+import { IPerformanceRepository } from "../../Domain/Port/Out/Repository/IPerformanceRepository";
+import { IPerformanceService } from "../../Domain/Port/Out/Service/IPerformanceService";
+import { PerformanceController } from "../Http/Controller/PerformanceController";
+import { PerformanceRepository } from "../Repository/PerformanceRepository";
+import { PerformanceService } from "../Service/PerformanceService";
+
 // ==================== USER ====================
 
 container.register<IUserRepository>("IUserRepository", { useClass: userRepository });
@@ -51,3 +57,17 @@ container.register(WorkoutTemplateService, { useFactory: (c) => new WorkoutTempl
 container.register<IWorkoutTemplateService>("IWorkoutTemplateService", { useFactory: (c) => c.resolve(WorkoutTemplateService) });
 
 container.register(WorkoutTemplateController, { useFactory: (c) => new WorkoutTemplateController(c.resolve(WorkoutTemplateService)) });
+
+// ==================== PERFORMANCE ====================
+
+container.register<IPerformanceRepository>("IPerformanceRepository", {
+  useFactory: (c) => new PerformanceRepository(c.resolve<IExerciceRepository>("IExerciceRepository"))
+});
+
+container.register(PerformanceService, {
+  useFactory: (c) => new PerformanceService(c.resolve<IPerformanceRepository>("IPerformanceRepository"))
+});
+
+container.register<IPerformanceService>("IPerformanceService", { useFactory: (c) => c.resolve(PerformanceService) });
+
+container.register(PerformanceController, { useFactory: (c) => new PerformanceController(c.resolve<IPerformanceService>("IPerformanceService")) });

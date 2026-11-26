@@ -1,6 +1,8 @@
 import { ApiError } from "../../Utils/ApiError";
 import { Exercice, makeExerciceFaker } from "./Exercice";
 
+import { makeWorkoutSessionFaker, WorkoutSession } from "./WorkoutSession";
+
 export class Performance {
   id: number;
   exercice: Exercice;
@@ -8,15 +10,16 @@ export class Performance {
   rep: number | undefined;
   time: number | undefined;
   rest: number | undefined;
-  //status:
+  workout_session: WorkoutSession;
 
-  constructor(id: number, exercice: Exercice, weight: number | undefined, rep: number | undefined, time: number | undefined, rest: number | undefined) {
+  constructor(id: number, exercice: Exercice, weight: number | undefined, rep: number | undefined, time: number | undefined, rest: number | undefined, workout_session: WorkoutSession) {
     this.id = id;
     this.exercice = exercice;
     this.weight = weight;
     this.rep = rep;
     this.time = time;
     this.rest = rest;
+    this.workout_session = workout_session;
 
     this.validate();
   }
@@ -36,5 +39,5 @@ export class Performance {
 export function makePerformanceFaker(performance? : Partial<Performance>){
   const exercice = makeExerciceFaker()
 
-  return new Performance(performance?.id ?? 1, performance?.exercice ?? exercice, performance?.weight ?? 100, performance?.rep ?? 12, performance?.time ?? undefined, performance?.rest ?? undefined)
+  return new Performance(performance?.id ?? 1, performance?.exercice ?? exercice, performance?.weight ?? 100, performance?.rep ?? 12, performance?.time ?? undefined, performance?.rest ?? undefined, performance?.workout_session ?? makeWorkoutSessionFaker({}))
 }
