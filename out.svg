@@ -1,0 +1,972 @@
+<svg version="1.1" baseProfile="full" width="3172.8" height="1797.0" viewBox="0 0 3172.75 1797" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+#.type: fill=lightgray
+
+[ApiError|+statusCode: number;+code?: string|]
+[Exercice|+id: number;+name: string;+muscle_1: Muscle;+muscle_2: Muscle \| undefined;+muscle_3: Muscle \| undefined;+user: User;+is_public: boolean|+validate(): void;+checkIndividualMuscle(): void]
+[Exercice]  -  [Muscle]
+[Exercice]  -  [Muscle]
+[Exercice]  -  [Muscle]
+[Exercice]  -  [User]
+[Favorite||]
+[Muscle|+id: number;+name: string|]
+[Performance|+id: number;+exercice: Exercice;+weight: number \| undefined;+rep: number \| undefined;+time: number \| undefined;+rest: number \| undefined;+workout_session: WorkoutSession|+validate(): void;+checkTime(): void]
+[Performance]  -  [Exercice]
+[Performance]  -  [WorkoutSession]
+[User|+id: number;+name: string;+email: string;+password: string;+is_public: boolean;+is_enable: boolean;+email_verified_at?: Date \| null|+validate(): void;+checkEmail(): void;+checkPassword(): void]
+[WorkoutSession|+id: number;+user: User;+workout_template: WorkoutTemplate;+date_of_workout: Date;+is_end: boolean|+validate(): void;+checkDateOfWorkoutForEnd(): void]
+[WorkoutSession]  -  [User]
+[WorkoutSession]  -  [WorkoutTemplate]
+[WorkoutTemplate|+id: number;+name: string;+user: User;+exercices: Exercice\[\];+is_public: boolean|]
+[WorkoutTemplate]  -  [User]
+[WorkoutTemplate]  - 0..* [Exercice]
+[ExerciceService||+canUpdateExercice(): void;+canCreateExercice(): void]
+[DUserService|-userRepository: IUserRepository|+canCreateUser(): Promise&lt;void&gt;]
+[DUserService]  -  [IUserRepository]
+[WorkoutTemplateService||+canUpdateWorkoutTemplate(): void;+canCreateWorkoutTemplate(): void]
+[ExerciceRepository||+findById(): Promise&lt;Exercice \| undefined&gt;;+findAll(): Promise&lt;Exercice\[\]&gt;;+create(): Promise&lt;Exercice&gt;;+update(): Promise&lt;Exercice&gt;;+delete(): Promise&lt;boolean&gt;]
+[IExerciceRepository]&lt;:--[ExerciceRepository]
+[PerformanceRepository|-exerciceRepository: IExerciceRepository|+findById(): Promise&lt;Performance \| undefined&gt;;+findAll(): Promise&lt;Performance\[\]&gt;;+create(): Promise&lt;Performance&gt;;+update(): Promise&lt;Performance \| undefined&gt;;+delete(): Promise&lt;boolean&gt;]
+[IPerformanceRepository]&lt;:--[PerformanceRepository]
+[PerformanceRepository]  -  [IExerciceRepository]
+[userRepository||+findByEmail(): Promise&lt;User \| undefined&gt;;+findByName(): Promise&lt;User \| undefined&gt;;+findById(): Promise&lt;User \| undefined&gt;;+findAll(): Promise&lt;User\[\] \| undefined&gt;;+create(): Promise&lt;User&gt;;+update(): Promise&lt;User&gt;;+delete(): Promise&lt;boolean&gt;;+disable(): Promise&lt;boolean&gt;;+enable(): Promise&lt;boolean&gt;]
+[IUserRepository]&lt;:--[userRepository]
+[WorkoutTemplateRepository|-userRepository: IUserRepository;-exerciceRepository: IExerciceRepository|+create(): Promise&lt;WorkoutTemplate&gt;;+delete(): Promise&lt;boolean&gt;;+update(): Promise&lt;WorkoutTemplate&gt;;+findById(): Promise&lt;WorkoutTemplate&gt;;+findAll(): Promise&lt;WorkoutTemplate\[\]&gt;]
+[IWorkoutTemplateRepository]&lt;:--[WorkoutTemplateRepository]
+[WorkoutTemplateRepository]  -  [IUserRepository]
+[WorkoutTemplateRepository]  -  [IExerciceRepository]
+[ExerciceService|-IExerciceRepository: IExerciceRepository|+create(): Promise&lt;Exercice&gt;;+findById(): Promise&lt;Exercice \| undefined&gt;;+findAll(): Promise&lt;Exercice\[\]&gt;;+update(): Promise&lt;Exercice&gt;;+delete(): Promise&lt;boolean&gt;]
+[IExerciceService]&lt;:--[ExerciceService]
+[ExerciceService]  -  [IExerciceRepository]
+[PerformanceService|-performanceRepository: IPerformanceRepository|+findById(): Promise&lt;Performance \| undefined&gt;;+findAll(): Promise&lt;Performance\[\]&gt;;+create(): Promise&lt;Performance&gt;;+update(): Promise&lt;Performance \| undefined&gt;;+delete(): Promise&lt;boolean&gt;]
+[IPerformanceService]&lt;:--[PerformanceService]
+[PerformanceService]  -  [IPerformanceRepository]
+[UserService|-IUserRepository: IUserRepository;-dUserService: DUserService|+create(): Promise&lt;User&gt;;+findByName(): Promise&lt;User \| undefined&gt;;+findByEmail(): Promise&lt;User \| undefined&gt;;+findByID(): Promise&lt;User \| undefined&gt;;+findAll(): Promise&lt;User\[\] \| undefined&gt;;+update(): Promise&lt;User&gt;;+delete(): Promise&lt;boolean&gt;;+disable(): Promise&lt;boolean&gt;;+enable(): Promise&lt;boolean&gt;]
+[IUserService]&lt;:--[UserService]
+[UserService]  -  [IUserRepository]
+[UserService]  -  [DUserService]
+[WorkoutTemplateService|-IWorkoutTemplateRepository: IWorkoutTemplateRepository|+create(): Promise&lt;WorkoutTemplate&gt;;+findById(): Promise&lt;WorkoutTemplate \| undefined&gt;;+findAll(): Promise&lt;WorkoutTemplate\[\] \| undefined&gt;;+update(): Promise&lt;WorkoutTemplate&gt;;+delete(): Promise&lt;boolean&gt;]
+[IWorkoutTemplateService]&lt;:--[WorkoutTemplateService]
+[WorkoutTemplateService]  -  [IWorkoutTemplateRepository]
+[ExerciceController|+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findAll: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;-exerciceService: IExerciceService|]
+[ExerciceController]  -  [IExerciceService]
+[PerformanceController|+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findAll: (_req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;-performanceService: IPerformanceService|]
+[PerformanceController]  -  [IPerformanceService]
+[UserController|+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findByName: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findByEmail: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findAll: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+disable: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+enable: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;-userService: IUserService|]
+[UserController]  -  [IUserService]
+[WorkoutTemplateController|+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+findAll: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;;-workoutTemplateService: IWorkoutTemplateService|]
+[WorkoutTemplateController]  -  [IWorkoutTemplateService]
+[IExerciceRepository||+abstract findById(): Promise&lt;Exercice \| undefined&gt;;+abstract findAll(): Promise&lt;Exercice\[\]&gt;;+abstract create(): Promise&lt;Exercice&gt;;+abstract update(): Promise&lt;Exercice&gt;;+abstract delete(): Promise&lt;boolean&gt;]
+[IPerformanceRepository||+abstract findById(): Promise&lt;Performance \| undefined&gt;;+abstract findAll(): Promise&lt;Performance\[\]&gt;;+abstract create(): Promise&lt;Performance&gt;;+abstract update(): Promise&lt;Performance \| undefined&gt;;+abstract delete(): Promise&lt;boolean&gt;]
+[IUserRepository||+abstract findByEmail(): Promise&lt;User \| undefined&gt;;+abstract findByName(): Promise&lt;User \| undefined&gt;;+abstract findById(): Promise&lt;User \| undefined&gt;;+abstract findAll(): Promise&lt;User\[\] \| undefined&gt;;+abstract create(): Promise&lt;User&gt;;+abstract update(): Promise&lt;User&gt;;+abstract delete(): Promise&lt;boolean&gt;;+abstract disable(): Promise&lt;boolean&gt;;+abstract enable(): Promise&lt;boolean&gt;]
+[IWorkoutTemplateRepository||+abstract create(): Promise&lt;WorkoutTemplate&gt;;+abstract delete(): Promise&lt;boolean&gt;;+abstract update(): Promise&lt;WorkoutTemplate&gt;;+abstract findById(): Promise&lt;WorkoutTemplate&gt;;+abstract findAll(): Promise&lt;WorkoutTemplate\[\]&gt;]
+[IExerciceService||+abstract findById(): Promise&lt;Exercice \| undefined&gt;;+abstract findAll(): Promise&lt;Exercice\[\]&gt;;+abstract create(): Promise&lt;Exercice&gt;;+abstract update(): Promise&lt;Exercice \| undefined&gt;;+abstract delete(): Promise&lt;boolean&gt;]
+[IPerformanceService||+abstract findById(): Promise&lt;Performance \| undefined&gt;;+abstract findAll(): Promise&lt;Performance\[\]&gt;;+abstract create(): Promise&lt;Performance&gt;;+abstract update(): Promise&lt;Performance \| undefined&gt;;+abstract delete(): Promise&lt;boolean&gt;]
+[IUserService||+abstract create(): Promise&lt;User&gt;;+abstract findByName(): Promise&lt;User \| undefined&gt;;+abstract findByEmail(): Promise&lt;User \| undefined&gt;;+abstract findByID(): Promise&lt;User \| undefined&gt;;+abstract findAll(): Promise&lt;User\[\] \| undefined&gt;;+abstract update(): Promise&lt;User&gt;;+abstract delete(): Promise&lt;boolean&gt;;+abstract disable(): Promise&lt;boolean&gt;;+abstract enable(): Promise&lt;boolean&gt;]
+[IWorkoutTemplateService||+abstract create(): Promise&lt;WorkoutTemplate&gt;;+abstract findById(): Promise&lt;WorkoutTemplate \| undefined&gt;;+abstract findAll(): Promise&lt;WorkoutTemplate\[\] \| undefined&gt;;+abstract update(): Promise&lt;WorkoutTemplate&gt;;+abstract delete(): Promise&lt;boolean&gt;]</desc>
+<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+<g stroke="transparent" fill="transparent">
+<rect x="0.0" y="0.0" height="1797.0" width="3172.8" stroke="none"></rect>
+</g>
+<g transform="translate(8, 8)" fill="#33322E">
+<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+<path d="M365.0 974.5 L349.5 1011 L376.26691729323306 1100 L376.3 1100.0 " fill="none"></path>
+<path d="M394.7 974.5 L389.5 1011 L389.5 1100 L389.5 1100.0 " fill="none"></path>
+<path d="M497.1 974.5 L527.75 1011 L435.2368421052632 1100 L435.2 1100.0 " fill="none"></path>
+<path d="M526.8 974.5 L567.75 1011 L582.2236842105264 1031 L582.2 1031.0 " fill="none"></path>
+<path d="M366.6 209.0 L342 229 L342 358 L342 358 L342 487 L342 487 L342 608 L342 608 L342 729 L342 729 L359.47340425531917 765.5 L359.5 765.5 " fill="none"></path>
+<path d="M577.9 209.0 L593.75 229 L593.75 269.5 L593.8 269.5 " fill="none"></path>
+<path d="M640.1 446.5 L661.25 487 L661.25 608 L661.25 608 L661.25 729 L661.25 729 L661.25 870 L661.25 870 L661.25 1011 L661.25 1011 L661.6635338345865 1031 L661.7 1031.0 " fill="none"></path>
+<path d="M535.1 446.5 L508.25 487 L508.25 539.5 L508.3 539.5 " fill="none"></path>
+<path d="M603.3 664.4 L712 729 L712 870 L712 870 L712 1011 L712 1011 L704.781954887218 1031 L704.8 1031.0 " fill="none"></path>
+<text x="447.7" y="757.5" stroke="none">0..*</text>
+<path d="M508.3 676.5 L508.25 729 L482.68705673758865 765.5 L482.7 765.5 " fill="none"></path>
+<path d="M2522.2 1192.0 L2309.25 1277 L2331.853305785124 1297 L2331.9 1297.0 " fill="none"></path>
+<g stroke-dasharray="6 6">
+<path d="M1632.3 1479.8 L1632.25 1519 L1632.25 1571.5 L1632.3 1571.5 " fill="none"></path>
+</g>
+<path d="M1637.6 1479.8 L1632.3 1479.8 L1626.9 1479.8 L1632.3 1466.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1071.8 951.8 L1071.75 1011 L1071.75 1063.5 L1071.8 1063.5 " fill="none"></path>
+</g>
+<path d="M1077.1 951.8 L1071.8 951.8 L1066.4 951.8 L1071.8 938.5 Z"></path>
+<path d="M1071.8 1224.5 L1071.75 1277 L1418.75 1351.9099018733273 L1418.8 1351.9 " fill="none"></path>
+<g stroke-dasharray="6 6">
+<path d="M2446.0 1512.3 L2446 1519 L2446 1539 L2446.0 1539.0 " fill="none"></path>
+</g>
+<path d="M2451.3 1512.3 L2446.0 1512.3 L2440.7 1512.3 L2446.0 1499.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M2152.8 951.8 L2152.75 1011 L2152.75 1055.5 L2152.8 1055.5 " fill="none"></path>
+</g>
+<path d="M2158.1 951.8 L2152.8 951.8 L2147.4 951.8 L2152.8 938.5 Z"></path>
+<path d="M2283.5 1232.5 L2349.25 1277 L2365.24173553719 1297 L2365.2 1297.0 " fill="none"></path>
+<path d="M1981.8 1226.0 L1875.25 1277 L1769.8161157024792 1329.5 L1769.8 1329.5 " fill="none"></path>
+<g stroke-dasharray="6 6">
+<path d="M1637.8 951.8 L1637.75 1011 L1637.75 1100 L1637.8 1100.0 " fill="none"></path>
+</g>
+<path d="M1643.1 951.8 L1637.8 951.8 L1632.4 951.8 L1637.8 938.5 Z"></path>
+<path d="M1729.6 1188.0 L1915.25 1277 L1792.4607438016528 1329.5 L1792.5 1329.5 " fill="none"></path>
+<g stroke-dasharray="6 6">
+<path d="M1071.8 439.8 L1071.75 487 L1071.75 527.5 L1071.8 527.5 " fill="none"></path>
+</g>
+<path d="M1077.1 439.8 L1071.8 439.8 L1066.4 439.8 L1071.8 426.5 Z"></path>
+<path d="M1071.8 688.5 L1071.75 729 L1071.75 801.5 L1071.8 801.5 " fill="none"></path>
+<g stroke-dasharray="6 6">
+<path d="M2779.3 722.3 L2779.25 729 L2779.25 749 L2779.3 749.0 " fill="none"></path>
+</g>
+<path d="M2784.6 722.3 L2779.3 722.3 L2773.9 722.3 L2779.3 709.0 Z"></path>
+<path d="M2857.3 991.0 L2870.25 1011 L2870.25 1144 L2870.25 1144 L2870.25 1277 L2870.25 1277 L2659.5 1337.1078373600471 L2659.5 1337.1 " fill="none"></path>
+<path d="M2661.9 991.0 L2642.5 1011 L2642.5 1096 L2642.5 1096.0 " fill="none"></path>
+<g stroke-dasharray="6 6">
+<path d="M2152.8 439.8 L2152.75 487 L2152.75 564 L2152.8 564.0 " fill="none"></path>
+</g>
+<path d="M2158.1 439.8 L2152.8 439.8 L2147.4 439.8 L2152.8 426.5 Z"></path>
+<path d="M2152.8 652.0 L2152.75 729 L2152.75 801.5 L2152.8 801.5 " fill="none"></path>
+<path d="M1637.8 684.5 L1637.75 729 L1637.75 801.5 L1637.8 801.5 " fill="none"></path>
+<path d="M1071.8 181.0 L1071.75 229 L1071.75 289.5 L1071.8 289.5 " fill="none"></path>
+<path d="M2779.3 467.0 L2779.25 487 L2779.25 507 L2779.3 507.0 " fill="none"></path>
+<path d="M2152.8 181.0 L2152.75 229 L2152.75 289.5 L2152.8 289.5 " fill="none"></path>
+<g data-name="ApiError">
+<g fill="#eee8d5" stroke="#33322E" data-name="ApiError">
+<rect x="0.0" y="60.5" height="88.0" width="186.0" data-name="ApiError"></rect>
+<path d="M0.0 92.5 L186.0 92.5" fill="none" data-name="ApiError"></path>
+<path d="M0.0 140.5 L186.0 140.5" fill="none" data-name="ApiError"></path>
+</g>
+<g transform="translate(0, 60.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ApiError" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ApiError" data-compartment="0">
+<a id="src/Utils/ApiError.ts.ApiError" xlink:href="src/Utils/ApiError.ts"><text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="ApiError" data-compartment="0">ApiError</text></a>
+
+</g>
+</g>
+<g transform="translate(0, 92.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ApiError" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ApiError" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ApiError" data-compartment="1">+statusCode: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ApiError" data-compartment="1">+code?: string</text>
+
+</g>
+</g>
+<g transform="translate(0, 140.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ApiError" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ApiError" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Exercice">
+<g fill="#eee8d5" stroke="#33322E" data-name="Exercice">
+<rect x="278.5" y="765.5" height="209.0" width="262.0" data-name="Exercice"></rect>
+<path d="M278.5 797.5 L540.5 797.5" fill="none" data-name="Exercice"></path>
+<path d="M278.5 926.5 L540.5 926.5" fill="none" data-name="Exercice"></path>
+</g>
+<g transform="translate(278.5, 765.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Exercice" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Exercice" data-compartment="0">
+<a id="src/Domain/Entity/Exercice.ts.Exercice" xlink:href="src/Domain/Entity/Exercice.ts"><text x="123.0" y="14.1" stroke="none" text-anchor="middle" data-name="Exercice" data-compartment="0">Exercice</text></a>
+
+</g>
+</g>
+<g transform="translate(278.5, 797.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Exercice" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Exercice" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Exercice" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Exercice" data-compartment="1">+name: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="Exercice" data-compartment="1">+muscle_1: Muscle</text>
+<text x="0.0" y="62.7" stroke="none" data-name="Exercice" data-compartment="1">+muscle_2: Muscle | undefined</text>
+<text x="0.0" y="78.9" stroke="none" data-name="Exercice" data-compartment="1">+muscle_3: Muscle | undefined</text>
+<text x="0.0" y="95.1" stroke="none" data-name="Exercice" data-compartment="1">+user: User</text>
+<text x="0.0" y="111.3" stroke="none" data-name="Exercice" data-compartment="1">+is_public: boolean</text>
+
+</g>
+</g>
+<g transform="translate(278.5, 926.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Exercice" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Exercice" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="Exercice" data-compartment="2">+validate(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Exercice" data-compartment="2">+checkIndividualMuscle(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="Muscle">
+<g fill="#eee8d5" stroke="#33322E" data-name="Muscle">
+<rect x="327.5" y="1100.0" height="88.0" width="124.0" data-name="Muscle"></rect>
+<path d="M327.5 1132.0 L451.5 1132.0" fill="none" data-name="Muscle"></path>
+<path d="M327.5 1180.0 L451.5 1180.0" fill="none" data-name="Muscle"></path>
+</g>
+<g transform="translate(327.5, 1100)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Muscle" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Muscle" data-compartment="0">
+<a id="src/Domain/Entity/Muscle.ts.Muscle" xlink:href="src/Domain/Entity/Muscle.ts"><text x="54.0" y="14.1" stroke="none" text-anchor="middle" data-name="Muscle" data-compartment="0">Muscle</text></a>
+
+</g>
+</g>
+<g transform="translate(327.5, 1132)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Muscle" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Muscle" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Muscle" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Muscle" data-compartment="1">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(327.5, 1180)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Muscle" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Muscle" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="User">
+<g fill="#eee8d5" stroke="#33322E" data-name="User">
+<rect x="533.5" y="1031.0" height="226.0" width="261.0" data-name="User"></rect>
+<path d="M533.5 1063.0 L794.5 1063.0" fill="none" data-name="User"></path>
+<path d="M533.5 1192.0 L794.5 1192.0" fill="none" data-name="User"></path>
+</g>
+<g transform="translate(533.5, 1031)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="User" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="User" data-compartment="0">
+<a id="src/Domain/Entity/User.ts.User" xlink:href="src/Domain/Entity/User.ts"><text x="122.5" y="14.1" stroke="none" text-anchor="middle" data-name="User" data-compartment="0">User</text></a>
+
+</g>
+</g>
+<g transform="translate(533.5, 1063)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="User" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="User" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="User" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="User" data-compartment="1">+name: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="User" data-compartment="1">+email: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="User" data-compartment="1">+password: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="User" data-compartment="1">+is_public: boolean</text>
+<text x="0.0" y="95.1" stroke="none" data-name="User" data-compartment="1">+is_enable: boolean</text>
+<text x="0.0" y="111.3" stroke="none" data-name="User" data-compartment="1">+email_verified_at?: Date | null</text>
+
+</g>
+</g>
+<g transform="translate(533.5, 1192)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="User" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="User" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="User" data-compartment="2">+validate(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="User" data-compartment="2">+checkEmail(): void</text>
+<text x="0.0" y="46.5" stroke="none" data-name="User" data-compartment="2">+checkPassword(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="Favorite">
+<g fill="#eee8d5" stroke="#33322E" data-name="Favorite">
+<rect x="226.0" y="80.5" height="48.0" width="80.0" data-name="Favorite"></rect>
+<path d="M226.0 112.5 L306.0 112.5" fill="none" data-name="Favorite"></path>
+<path d="M226.0 120.5 L306.0 120.5" fill="none" data-name="Favorite"></path>
+</g>
+<g transform="translate(226, 80.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Favorite" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Favorite" data-compartment="0">
+<a id="src/Domain/Entity/Favorite.ts.Favorite" xlink:href="src/Domain/Entity/Favorite.ts"><text x="32.0" y="14.1" stroke="none" text-anchor="middle" data-name="Favorite" data-compartment="0">Favorite</text></a>
+
+</g>
+</g>
+<g transform="translate(226, 112.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Favorite" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Favorite" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(226, 120.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Favorite" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Favorite" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Performance">
+<g fill="#eee8d5" stroke="#33322E" data-name="Performance">
+<rect x="346.0" y="0.0" height="209.0" width="298.0" data-name="Performance"></rect>
+<path d="M346.0 32.0 L644.0 32.0" fill="none" data-name="Performance"></path>
+<path d="M346.0 161.0 L644.0 161.0" fill="none" data-name="Performance"></path>
+</g>
+<g transform="translate(346, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Performance" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Performance" data-compartment="0">
+<a id="src/Domain/Entity/Performance.ts.Performance" xlink:href="src/Domain/Entity/Performance.ts"><text x="141.0" y="14.1" stroke="none" text-anchor="middle" data-name="Performance" data-compartment="0">Performance</text></a>
+
+</g>
+</g>
+<g transform="translate(346, 32)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Performance" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Performance" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Performance" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Performance" data-compartment="1">+exercice: Exercice</text>
+<text x="0.0" y="46.5" stroke="none" data-name="Performance" data-compartment="1">+weight: number | undefined</text>
+<text x="0.0" y="62.7" stroke="none" data-name="Performance" data-compartment="1">+rep: number | undefined</text>
+<text x="0.0" y="78.9" stroke="none" data-name="Performance" data-compartment="1">+time: number | undefined</text>
+<text x="0.0" y="95.1" stroke="none" data-name="Performance" data-compartment="1">+rest: number | undefined</text>
+<text x="0.0" y="111.3" stroke="none" data-name="Performance" data-compartment="1">+workout_session: WorkoutSession</text>
+
+</g>
+</g>
+<g transform="translate(346, 161)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Performance" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Performance" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="Performance" data-compartment="2">+validate(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Performance" data-compartment="2">+checkTime(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="WorkoutSession">
+<g fill="#eee8d5" stroke="#33322E" data-name="WorkoutSession">
+<rect x="436.3" y="269.5" height="177.0" width="315.0" data-name="WorkoutSession"></rect>
+<path d="M436.3 301.5 L751.3 301.5" fill="none" data-name="WorkoutSession"></path>
+<path d="M436.3 398.5 L751.3 398.5" fill="none" data-name="WorkoutSession"></path>
+</g>
+<g transform="translate(436.25, 269.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="WorkoutSession" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="WorkoutSession" data-compartment="0">
+<a id="src/Domain/Entity/WorkoutSession.ts.WorkoutSession" xlink:href="src/Domain/Entity/WorkoutSession.ts"><text x="149.5" y="14.1" stroke="none" text-anchor="middle" data-name="WorkoutSession" data-compartment="0">WorkoutSession</text></a>
+
+</g>
+</g>
+<g transform="translate(436.25, 301.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutSession" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutSession" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutSession" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutSession" data-compartment="1">+user: User</text>
+<text x="0.0" y="46.5" stroke="none" data-name="WorkoutSession" data-compartment="1">+workout_template: WorkoutTemplate</text>
+<text x="0.0" y="62.7" stroke="none" data-name="WorkoutSession" data-compartment="1">+date_of_workout: Date</text>
+<text x="0.0" y="78.9" stroke="none" data-name="WorkoutSession" data-compartment="1">+is_end: boolean</text>
+
+</g>
+</g>
+<g transform="translate(436.25, 398.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutSession" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutSession" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutSession" data-compartment="2">+validate(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutSession" data-compartment="2">+checkDateOfWorkoutForEnd(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="WorkoutTemplate">
+<g fill="#eee8d5" stroke="#33322E" data-name="WorkoutTemplate">
+<rect x="413.3" y="539.5" height="137.0" width="190.0" data-name="WorkoutTemplate"></rect>
+<path d="M413.3 571.5 L603.3 571.5" fill="none" data-name="WorkoutTemplate"></path>
+<path d="M413.3 668.5 L603.3 668.5" fill="none" data-name="WorkoutTemplate"></path>
+</g>
+<g transform="translate(413.25, 539.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="WorkoutTemplate" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="WorkoutTemplate" data-compartment="0">
+<a id="src/Domain/Entity/WorkoutTemplate.ts.WorkoutTemplate" xlink:href="src/Domain/Entity/WorkoutTemplate.ts"><text x="87.0" y="14.1" stroke="none" text-anchor="middle" data-name="WorkoutTemplate" data-compartment="0">WorkoutTemplate</text></a>
+
+</g>
+</g>
+<g transform="translate(413.25, 571.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplate" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutTemplate" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutTemplate" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutTemplate" data-compartment="1">+name: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="WorkoutTemplate" data-compartment="1">+user: User</text>
+<text x="0.0" y="62.7" stroke="none" data-name="WorkoutTemplate" data-compartment="1">+exercices: Exercice[]</text>
+<text x="0.0" y="78.9" stroke="none" data-name="WorkoutTemplate" data-compartment="1">+is_public: boolean</text>
+
+</g>
+</g>
+<g transform="translate(413.25, 668.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplate" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="WorkoutTemplate" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ExerciceService">
+<g fill="#eee8d5" stroke="#33322E" data-name="ExerciceService">
+<rect x="1520.3" y="1100.0" height="88.0" width="235.0" data-name="ExerciceService"></rect>
+<path d="M1520.3 1132.0 L1755.3 1132.0" fill="none" data-name="ExerciceService"></path>
+<path d="M1520.3 1140.0 L1755.3 1140.0" fill="none" data-name="ExerciceService"></path>
+</g>
+<g transform="translate(1520.25, 1100)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ExerciceService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ExerciceService" data-compartment="0">
+<a id="src/Infra/Service/ExerciceService.ts.ExerciceService" xlink:href="src/Infra/Service/ExerciceService.ts"><text x="109.5" y="14.1" stroke="none" text-anchor="middle" data-name="ExerciceService" data-compartment="0">ExerciceService</text></a>
+
+</g>
+</g>
+<g transform="translate(1520.25, 1132)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ExerciceService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ExerciceService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1520.25, 1140)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ExerciceService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ExerciceService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ExerciceService" data-compartment="2">+canUpdateExercice(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ExerciceService" data-compartment="2">+canCreateExercice(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="DUserService">
+<g fill="#eee8d5" stroke="#33322E" data-name="DUserService">
+<rect x="2500.5" y="1096.0" height="96.0" width="284.0" data-name="DUserService"></rect>
+<path d="M2500.5 1128.0 L2784.5 1128.0" fill="none" data-name="DUserService"></path>
+<path d="M2500.5 1160.0 L2784.5 1160.0" fill="none" data-name="DUserService"></path>
+</g>
+<g transform="translate(2500.5, 1096)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="DUserService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="DUserService" data-compartment="0">
+<a id="src/Domain/Service/DUserService.ts.DUserService" xlink:href="src/Domain/Service/DUserService.ts"><text x="134.0" y="14.1" stroke="none" text-anchor="middle" data-name="DUserService" data-compartment="0">DUserService</text></a>
+
+</g>
+</g>
+<g transform="translate(2500.5, 1128)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="DUserService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="DUserService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="DUserService" data-compartment="1">-userRepository: IUserRepository</text>
+
+</g>
+</g>
+<g transform="translate(2500.5, 1160)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="DUserService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="DUserService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="DUserService" data-compartment="2">+canCreateUser(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IUserRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="IUserRepository">
+<rect x="2232.5" y="1297.0" height="202.0" width="427.0" data-name="IUserRepository"></rect>
+<path d="M2232.5 1329.0 L2659.5 1329.0" fill="none" data-name="IUserRepository"></path>
+<path d="M2232.5 1337.0 L2659.5 1337.0" fill="none" data-name="IUserRepository"></path>
+</g>
+<g transform="translate(2232.5, 1297)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IUserRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IUserRepository" data-compartment="0">
+<a id="src/Domain/Port/Out/Repository/IUserRepository.ts.IUserRepository" xlink:href="src/Domain/Port/Out/Repository/IUserRepository.ts"><text x="205.5" y="14.1" stroke="none" text-anchor="middle" data-name="IUserRepository" data-compartment="0">IUserRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(2232.5, 1329)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IUserRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(2232.5, 1337)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IUserRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract findByEmail(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract findByName(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract findById(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract findAll(): Promise&lt;User[] | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract create(): Promise&lt;User&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract update(): Promise&lt;User&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract disable(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="IUserRepository" data-compartment="2">+abstract enable(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="WorkoutTemplateService">
+<g fill="#eee8d5" stroke="#33322E" data-name="WorkoutTemplateService">
+<rect x="1999.8" y="564.0" height="88.0" width="306.0" data-name="WorkoutTemplateService"></rect>
+<path d="M1999.8 596.0 L2305.8 596.0" fill="none" data-name="WorkoutTemplateService"></path>
+<path d="M1999.8 604.0 L2305.8 604.0" fill="none" data-name="WorkoutTemplateService"></path>
+</g>
+<g transform="translate(1999.75, 564)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="WorkoutTemplateService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="WorkoutTemplateService" data-compartment="0">
+<a id="src/Infra/Service/WorkoutTemplateService.ts.WorkoutTemplateService" xlink:href="src/Infra/Service/WorkoutTemplateService.ts"><text x="145.0" y="14.1" stroke="none" text-anchor="middle" data-name="WorkoutTemplateService" data-compartment="0">WorkoutTemplateService</text></a>
+
+</g>
+</g>
+<g transform="translate(1999.75, 596)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplateService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="WorkoutTemplateService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1999.75, 604)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplateService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutTemplateService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutTemplateService" data-compartment="2">+canUpdateWorkoutTemplate(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutTemplateService" data-compartment="2">+canCreateWorkoutTemplate(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="ExerciceRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="ExerciceRepository">
+<rect x="1453.3" y="1571.5" height="137.0" width="358.0" data-name="ExerciceRepository"></rect>
+<path d="M1453.3 1603.5 L1811.3 1603.5" fill="none" data-name="ExerciceRepository"></path>
+<path d="M1453.3 1611.5 L1811.3 1611.5" fill="none" data-name="ExerciceRepository"></path>
+</g>
+<g transform="translate(1453.25, 1571.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ExerciceRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ExerciceRepository" data-compartment="0">
+<a id="src/Infra/Repository/ExerciceRepository.ts.ExerciceRepository" xlink:href="src/Infra/Repository/ExerciceRepository.ts"><text x="171.0" y="14.1" stroke="none" text-anchor="middle" data-name="ExerciceRepository" data-compartment="0">ExerciceRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(1453.25, 1603.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ExerciceRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ExerciceRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1453.25, 1611.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ExerciceRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ExerciceRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ExerciceRepository" data-compartment="2">+findById(): Promise&lt;Exercice | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ExerciceRepository" data-compartment="2">+findAll(): Promise&lt;Exercice[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ExerciceRepository" data-compartment="2">+create(): Promise&lt;Exercice&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ExerciceRepository" data-compartment="2">+update(): Promise&lt;Exercice&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ExerciceRepository" data-compartment="2">+delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IExerciceRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="IExerciceRepository">
+<rect x="1418.8" y="1329.5" height="137.0" width="427.0" data-name="IExerciceRepository"></rect>
+<path d="M1418.8 1361.5 L1845.8 1361.5" fill="none" data-name="IExerciceRepository"></path>
+<path d="M1418.8 1369.5 L1845.8 1369.5" fill="none" data-name="IExerciceRepository"></path>
+</g>
+<g transform="translate(1418.75, 1329.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IExerciceRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IExerciceRepository" data-compartment="0">
+<a id="src/Domain/Port/Out/Repository/IExerciceRepository.ts.IExerciceRepository" xlink:href="src/Domain/Port/Out/Repository/IExerciceRepository.ts"><text x="205.5" y="14.1" stroke="none" text-anchor="middle" data-name="IExerciceRepository" data-compartment="0">IExerciceRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(1418.75, 1361.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IExerciceRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IExerciceRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1418.75, 1369.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IExerciceRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IExerciceRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IExerciceRepository" data-compartment="2">+abstract findById(): Promise&lt;Exercice | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IExerciceRepository" data-compartment="2">+abstract findAll(): Promise&lt;Exercice[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IExerciceRepository" data-compartment="2">+abstract create(): Promise&lt;Exercice&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IExerciceRepository" data-compartment="2">+abstract update(): Promise&lt;Exercice&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IExerciceRepository" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PerformanceRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="PerformanceRepository">
+<rect x="876.3" y="1063.5" height="161.0" width="391.0" data-name="PerformanceRepository"></rect>
+<path d="M876.3 1095.5 L1267.3 1095.5" fill="none" data-name="PerformanceRepository"></path>
+<path d="M876.3 1127.5 L1267.3 1127.5" fill="none" data-name="PerformanceRepository"></path>
+</g>
+<g transform="translate(876.25, 1063.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PerformanceRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PerformanceRepository" data-compartment="0">
+<a id="src/Infra/Repository/PerformanceRepository.ts.PerformanceRepository" xlink:href="src/Infra/Repository/PerformanceRepository.ts"><text x="187.5" y="14.1" stroke="none" text-anchor="middle" data-name="PerformanceRepository" data-compartment="0">PerformanceRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(876.25, 1095.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PerformanceRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PerformanceRepository" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PerformanceRepository" data-compartment="1">-exerciceRepository: IExerciceRepository</text>
+
+</g>
+</g>
+<g transform="translate(876.25, 1127.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PerformanceRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PerformanceRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="PerformanceRepository" data-compartment="2">+findById(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PerformanceRepository" data-compartment="2">+findAll(): Promise&lt;Performance[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PerformanceRepository" data-compartment="2">+create(): Promise&lt;Performance&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="PerformanceRepository" data-compartment="2">+update(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="PerformanceRepository" data-compartment="2">+delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IPerformanceRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="IPerformanceRepository">
+<rect x="841.8" y="801.5" height="137.0" width="460.0" data-name="IPerformanceRepository"></rect>
+<path d="M841.8 833.5 L1301.8 833.5" fill="none" data-name="IPerformanceRepository"></path>
+<path d="M841.8 841.5 L1301.8 841.5" fill="none" data-name="IPerformanceRepository"></path>
+</g>
+<g transform="translate(841.75, 801.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IPerformanceRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IPerformanceRepository" data-compartment="0">
+<a id="src/Domain/Port/Out/Repository/IPerformanceRepository.ts.IPerformanceRepository" xlink:href="src/Domain/Port/Out/Repository/IPerformanceRepository.ts"><text x="222.0" y="14.1" stroke="none" text-anchor="middle" data-name="IPerformanceRepository" data-compartment="0">IPerformanceRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(841.75, 833.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPerformanceRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IPerformanceRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(841.75, 841.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPerformanceRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IPerformanceRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IPerformanceRepository" data-compartment="2">+abstract findById(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IPerformanceRepository" data-compartment="2">+abstract findAll(): Promise&lt;Performance[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IPerformanceRepository" data-compartment="2">+abstract create(): Promise&lt;Performance&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IPerformanceRepository" data-compartment="2">+abstract update(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IPerformanceRepository" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="userRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="userRepository">
+<rect x="2267.0" y="1539.0" height="202.0" width="358.0" data-name="userRepository"></rect>
+<path d="M2267.0 1571.0 L2625.0 1571.0" fill="none" data-name="userRepository"></path>
+<path d="M2267.0 1579.0 L2625.0 1579.0" fill="none" data-name="userRepository"></path>
+</g>
+<g transform="translate(2267, 1539)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="userRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="userRepository" data-compartment="0">
+<a id="src/Infra/Repository/UserRepository.ts.userRepository" xlink:href="src/Infra/Repository/UserRepository.ts"><text x="171.0" y="14.1" stroke="none" text-anchor="middle" data-name="userRepository" data-compartment="0">userRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(2267, 1571)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="userRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="userRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(2267, 1579)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="userRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="userRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="userRepository" data-compartment="2">+findByEmail(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="userRepository" data-compartment="2">+findByName(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="userRepository" data-compartment="2">+findById(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="userRepository" data-compartment="2">+findAll(): Promise&lt;User[] | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="userRepository" data-compartment="2">+create(): Promise&lt;User&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="userRepository" data-compartment="2">+update(): Promise&lt;User&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="userRepository" data-compartment="2">+delete(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="userRepository" data-compartment="2">+disable(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="userRepository" data-compartment="2">+enable(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="WorkoutTemplateRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="WorkoutTemplateRepository">
+<rect x="1981.8" y="1055.5" height="177.0" width="342.0" data-name="WorkoutTemplateRepository"></rect>
+<path d="M1981.8 1087.5 L2323.8 1087.5" fill="none" data-name="WorkoutTemplateRepository"></path>
+<path d="M1981.8 1135.5 L2323.8 1135.5" fill="none" data-name="WorkoutTemplateRepository"></path>
+</g>
+<g transform="translate(1981.75, 1055.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="WorkoutTemplateRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="WorkoutTemplateRepository" data-compartment="0">
+<a id="src/Infra/Repository/WorkoutTemplateRepository.ts.WorkoutTemplateRepository" xlink:href="src/Infra/Repository/WorkoutTemplateRepository.ts"><text x="163.0" y="14.1" stroke="none" text-anchor="middle" data-name="WorkoutTemplateRepository" data-compartment="0">WorkoutTemplateRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(1981.75, 1087.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplateRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutTemplateRepository" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="1">-userRepository: IUserRepository</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="1">-exerciceRepository: IExerciceRepository</text>
+
+</g>
+</g>
+<g transform="translate(1981.75, 1135.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplateRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutTemplateRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="2">+create(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="2">+delete(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="2">+update(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="2">+findById(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="WorkoutTemplateRepository" data-compartment="2">+findAll(): Promise&lt;WorkoutTemplate[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IWorkoutTemplateRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="IWorkoutTemplateRepository">
+<rect x="1950.8" y="801.5" height="137.0" width="404.0" data-name="IWorkoutTemplateRepository"></rect>
+<path d="M1950.8 833.5 L2354.8 833.5" fill="none" data-name="IWorkoutTemplateRepository"></path>
+<path d="M1950.8 841.5 L2354.8 841.5" fill="none" data-name="IWorkoutTemplateRepository"></path>
+</g>
+<g transform="translate(1950.75, 801.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IWorkoutTemplateRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IWorkoutTemplateRepository" data-compartment="0">
+<a id="src/Domain/Port/Out/Repository/IWorkoutTemplateRepository.ts.IWorkoutTemplateRepository" xlink:href="src/Domain/Port/Out/Repository/IWorkoutTemplateRepository.ts"><text x="194.0" y="14.1" stroke="none" text-anchor="middle" data-name="IWorkoutTemplateRepository" data-compartment="0">IWorkoutTemplateRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(1950.75, 833.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IWorkoutTemplateRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IWorkoutTemplateRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1950.75, 841.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IWorkoutTemplateRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IWorkoutTemplateRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IWorkoutTemplateRepository" data-compartment="2">+abstract create(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IWorkoutTemplateRepository" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IWorkoutTemplateRepository" data-compartment="2">+abstract update(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IWorkoutTemplateRepository" data-compartment="2">+abstract findById(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IWorkoutTemplateRepository" data-compartment="2">+abstract findAll(): Promise&lt;WorkoutTemplate[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IExerciceService">
+<g fill="#eee8d5" stroke="#33322E" data-name="IExerciceService">
+<rect x="1424.3" y="801.5" height="137.0" width="427.0" data-name="IExerciceService"></rect>
+<path d="M1424.3 833.5 L1851.3 833.5" fill="none" data-name="IExerciceService"></path>
+<path d="M1424.3 841.5 L1851.3 841.5" fill="none" data-name="IExerciceService"></path>
+</g>
+<g transform="translate(1424.25, 801.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IExerciceService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IExerciceService" data-compartment="0">
+<a id="src/Domain/Port/Out/Service/IExerciceService.ts.IExerciceService" xlink:href="src/Domain/Port/Out/Service/IExerciceService.ts"><text x="205.5" y="14.1" stroke="none" text-anchor="middle" data-name="IExerciceService" data-compartment="0">IExerciceService</text></a>
+
+</g>
+</g>
+<g transform="translate(1424.25, 833.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IExerciceService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IExerciceService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1424.25, 841.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IExerciceService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IExerciceService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IExerciceService" data-compartment="2">+abstract findById(): Promise&lt;Exercice | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IExerciceService" data-compartment="2">+abstract findAll(): Promise&lt;Exercice[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IExerciceService" data-compartment="2">+abstract create(): Promise&lt;Exercice&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IExerciceService" data-compartment="2">+abstract update(): Promise&lt;Exercice | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IExerciceService" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PerformanceService">
+<g fill="#eee8d5" stroke="#33322E" data-name="PerformanceService">
+<rect x="867.8" y="527.5" height="161.0" width="408.0" data-name="PerformanceService"></rect>
+<path d="M867.8 559.5 L1275.8 559.5" fill="none" data-name="PerformanceService"></path>
+<path d="M867.8 591.5 L1275.8 591.5" fill="none" data-name="PerformanceService"></path>
+</g>
+<g transform="translate(867.75, 527.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PerformanceService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PerformanceService" data-compartment="0">
+<a id="src/Infra/Service/PerformanceService.ts.PerformanceService" xlink:href="src/Infra/Service/PerformanceService.ts"><text x="196.0" y="14.1" stroke="none" text-anchor="middle" data-name="PerformanceService" data-compartment="0">PerformanceService</text></a>
+
+</g>
+</g>
+<g transform="translate(867.75, 559.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PerformanceService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PerformanceService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PerformanceService" data-compartment="1">-performanceRepository: IPerformanceRepository</text>
+
+</g>
+</g>
+<g transform="translate(867.75, 591.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PerformanceService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PerformanceService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="PerformanceService" data-compartment="2">+findById(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PerformanceService" data-compartment="2">+findAll(): Promise&lt;Performance[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PerformanceService" data-compartment="2">+create(): Promise&lt;Performance&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="PerformanceService" data-compartment="2">+update(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="PerformanceService" data-compartment="2">+delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IPerformanceService">
+<g fill="#eee8d5" stroke="#33322E" data-name="IPerformanceService">
+<rect x="841.8" y="289.5" height="137.0" width="460.0" data-name="IPerformanceService"></rect>
+<path d="M841.8 321.5 L1301.8 321.5" fill="none" data-name="IPerformanceService"></path>
+<path d="M841.8 329.5 L1301.8 329.5" fill="none" data-name="IPerformanceService"></path>
+</g>
+<g transform="translate(841.75, 289.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IPerformanceService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IPerformanceService" data-compartment="0">
+<a id="src/Domain/Port/Out/Service/IPerformanceService.ts.IPerformanceService" xlink:href="src/Domain/Port/Out/Service/IPerformanceService.ts"><text x="222.0" y="14.1" stroke="none" text-anchor="middle" data-name="IPerformanceService" data-compartment="0">IPerformanceService</text></a>
+
+</g>
+</g>
+<g transform="translate(841.75, 321.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPerformanceService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IPerformanceService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(841.75, 329.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPerformanceService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IPerformanceService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IPerformanceService" data-compartment="2">+abstract findById(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IPerformanceService" data-compartment="2">+abstract findAll(): Promise&lt;Performance[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IPerformanceService" data-compartment="2">+abstract create(): Promise&lt;Performance&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IPerformanceService" data-compartment="2">+abstract update(): Promise&lt;Performance | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IPerformanceService" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="UserService">
+<g fill="#eee8d5" stroke="#33322E" data-name="UserService">
+<rect x="2600.3" y="749.0" height="242.0" width="358.0" data-name="UserService"></rect>
+<path d="M2600.3 781.0 L2958.3 781.0" fill="none" data-name="UserService"></path>
+<path d="M2600.3 829.0 L2958.3 829.0" fill="none" data-name="UserService"></path>
+</g>
+<g transform="translate(2600.25, 749)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UserService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UserService" data-compartment="0">
+<a id="src/Infra/Service/UserService.ts.UserService" xlink:href="src/Infra/Service/UserService.ts"><text x="171.0" y="14.1" stroke="none" text-anchor="middle" data-name="UserService" data-compartment="0">UserService</text></a>
+
+</g>
+</g>
+<g transform="translate(2600.25, 781)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="UserService" data-compartment="1">-IUserRepository: IUserRepository</text>
+<text x="0.0" y="30.3" stroke="none" data-name="UserService" data-compartment="1">-dUserService: DUserService</text>
+
+</g>
+</g>
+<g transform="translate(2600.25, 829)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="UserService" data-compartment="2">+create(): Promise&lt;User&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="UserService" data-compartment="2">+findByName(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="UserService" data-compartment="2">+findByEmail(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="UserService" data-compartment="2">+findByID(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="UserService" data-compartment="2">+findAll(): Promise&lt;User[] | undefined&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="UserService" data-compartment="2">+update(): Promise&lt;User&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="UserService" data-compartment="2">+delete(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="UserService" data-compartment="2">+disable(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="UserService" data-compartment="2">+enable(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IUserService">
+<g fill="#eee8d5" stroke="#33322E" data-name="IUserService">
+<rect x="2565.8" y="507.0" height="202.0" width="427.0" data-name="IUserService"></rect>
+<path d="M2565.8 539.0 L2992.8 539.0" fill="none" data-name="IUserService"></path>
+<path d="M2565.8 547.0 L2992.8 547.0" fill="none" data-name="IUserService"></path>
+</g>
+<g transform="translate(2565.75, 507)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IUserService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IUserService" data-compartment="0">
+<a id="src/Domain/Port/Out/Service/IUserService.ts.IUserService" xlink:href="src/Domain/Port/Out/Service/IUserService.ts"><text x="205.5" y="14.1" stroke="none" text-anchor="middle" data-name="IUserService" data-compartment="0">IUserService</text></a>
+
+</g>
+</g>
+<g transform="translate(2565.75, 539)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IUserService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(2565.75, 547)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IUserService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IUserService" data-compartment="2">+abstract create(): Promise&lt;User&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IUserService" data-compartment="2">+abstract findByName(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IUserService" data-compartment="2">+abstract findByEmail(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IUserService" data-compartment="2">+abstract findByID(): Promise&lt;User | undefined&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IUserService" data-compartment="2">+abstract findAll(): Promise&lt;User[] | undefined&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="IUserService" data-compartment="2">+abstract update(): Promise&lt;User&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="IUserService" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="IUserService" data-compartment="2">+abstract disable(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="IUserService" data-compartment="2">+abstract enable(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IWorkoutTemplateService">
+<g fill="#eee8d5" stroke="#33322E" data-name="IWorkoutTemplateService">
+<rect x="1903.8" y="289.5" height="137.0" width="498.0" data-name="IWorkoutTemplateService"></rect>
+<path d="M1903.8 321.5 L2401.8 321.5" fill="none" data-name="IWorkoutTemplateService"></path>
+<path d="M1903.8 329.5 L2401.8 329.5" fill="none" data-name="IWorkoutTemplateService"></path>
+</g>
+<g transform="translate(1903.75, 289.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="IWorkoutTemplateService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IWorkoutTemplateService" data-compartment="0">
+<a id="src/Domain/Port/Out/Service/IWorkoutTemplateService.ts.IWorkoutTemplateService" xlink:href="src/Domain/Port/Out/Service/IWorkoutTemplateService.ts"><text x="241.0" y="14.1" stroke="none" text-anchor="middle" data-name="IWorkoutTemplateService" data-compartment="0">IWorkoutTemplateService</text></a>
+
+</g>
+</g>
+<g transform="translate(1903.75, 321.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IWorkoutTemplateService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IWorkoutTemplateService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1903.75, 329.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IWorkoutTemplateService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IWorkoutTemplateService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="IWorkoutTemplateService" data-compartment="2">+abstract create(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="IWorkoutTemplateService" data-compartment="2">+abstract findById(): Promise&lt;WorkoutTemplate | undefined&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="IWorkoutTemplateService" data-compartment="2">+abstract findAll(): Promise&lt;WorkoutTemplate[] | undefined&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="IWorkoutTemplateService" data-compartment="2">+abstract update(): Promise&lt;WorkoutTemplate&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="IWorkoutTemplateService" data-compartment="2">+abstract delete(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ExerciceController">
+<g fill="#eee8d5" stroke="#33322E" data-name="ExerciceController">
+<rect x="1315.8" y="531.5" height="153.0" width="644.0" data-name="ExerciceController"></rect>
+<path d="M1315.8 563.5 L1959.8 563.5" fill="none" data-name="ExerciceController"></path>
+<path d="M1315.8 676.5 L1959.8 676.5" fill="none" data-name="ExerciceController"></path>
+</g>
+<g transform="translate(1315.75, 531.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ExerciceController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ExerciceController" data-compartment="0">
+<a id="src/Infra/Http/Controller/ExerciceController.ts.ExerciceController" xlink:href="src/Infra/Http/Controller/ExerciceController.ts"><text x="314.0" y="14.1" stroke="none" text-anchor="middle" data-name="ExerciceController" data-compartment="0">ExerciceController</text></a>
+
+</g>
+</g>
+<g transform="translate(1315.75, 563.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ExerciceController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ExerciceController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ExerciceController" data-compartment="1">+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ExerciceController" data-compartment="1">+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ExerciceController" data-compartment="1">+findAll: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ExerciceController" data-compartment="1">+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ExerciceController" data-compartment="1">+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ExerciceController" data-compartment="1">-exerciceService: IExerciceService</text>
+
+</g>
+</g>
+<g transform="translate(1315.75, 676.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ExerciceController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ExerciceController" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="PerformanceController">
+<g fill="#eee8d5" stroke="#33322E" data-name="PerformanceController">
+<rect x="749.8" y="28.0" height="153.0" width="644.0" data-name="PerformanceController"></rect>
+<path d="M749.8 60.0 L1393.8 60.0" fill="none" data-name="PerformanceController"></path>
+<path d="M749.8 173.0 L1393.8 173.0" fill="none" data-name="PerformanceController"></path>
+</g>
+<g transform="translate(749.75, 28)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PerformanceController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PerformanceController" data-compartment="0">
+<a id="src/Infra/Http/Controller/PerformanceController.ts.PerformanceController" xlink:href="src/Infra/Http/Controller/PerformanceController.ts"><text x="314.0" y="14.1" stroke="none" text-anchor="middle" data-name="PerformanceController" data-compartment="0">PerformanceController</text></a>
+
+</g>
+</g>
+<g transform="translate(749.75, 60)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PerformanceController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PerformanceController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PerformanceController" data-compartment="1">+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PerformanceController" data-compartment="1">+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PerformanceController" data-compartment="1">+findAll: (_req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="PerformanceController" data-compartment="1">+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="PerformanceController" data-compartment="1">+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="PerformanceController" data-compartment="1">-performanceService: IPerformanceService</text>
+
+</g>
+</g>
+<g transform="translate(749.75, 173)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PerformanceController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PerformanceController" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UserController">
+<g fill="#eee8d5" stroke="#33322E" data-name="UserController">
+<rect x="2441.8" y="249.0" height="218.0" width="675.0" data-name="UserController"></rect>
+<path d="M2441.8 281.0 L3116.8 281.0" fill="none" data-name="UserController"></path>
+<path d="M2441.8 459.0 L3116.8 459.0" fill="none" data-name="UserController"></path>
+</g>
+<g transform="translate(2441.75, 249)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UserController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UserController" data-compartment="0">
+<a id="src/Infra/Http/Controller/UserController.ts.UserController" xlink:href="src/Infra/Http/Controller/UserController.ts"><text x="329.5" y="14.1" stroke="none" text-anchor="middle" data-name="UserController" data-compartment="0">UserController</text></a>
+
+</g>
+</g>
+<g transform="translate(2441.75, 281)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="UserController" data-compartment="1">+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="UserController" data-compartment="1">+findByName: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="UserController" data-compartment="1">+findByEmail: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="UserController" data-compartment="1">+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="UserController" data-compartment="1">+findAll: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="UserController" data-compartment="1">+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="UserController" data-compartment="1">+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="UserController" data-compartment="1">+disable: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="UserController" data-compartment="1">+enable: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="159.9" stroke="none" data-name="UserController" data-compartment="1">-userService: IUserService</text>
+
+</g>
+</g>
+<g transform="translate(2441.75, 459)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UserController" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="WorkoutTemplateController">
+<g fill="#eee8d5" stroke="#33322E" data-name="WorkoutTemplateController">
+<rect x="1830.8" y="28.0" height="153.0" width="644.0" data-name="WorkoutTemplateController"></rect>
+<path d="M1830.8 60.0 L2474.8 60.0" fill="none" data-name="WorkoutTemplateController"></path>
+<path d="M1830.8 173.0 L2474.8 173.0" fill="none" data-name="WorkoutTemplateController"></path>
+</g>
+<g transform="translate(1830.75, 28)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="WorkoutTemplateController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="WorkoutTemplateController" data-compartment="0">
+<a id="src/Infra/Http/Controller/WorkoutTemplateController.ts.WorkoutTemplateController" xlink:href="src/Infra/Http/Controller/WorkoutTemplateController.ts"><text x="314.0" y="14.1" stroke="none" text-anchor="middle" data-name="WorkoutTemplateController" data-compartment="0">WorkoutTemplateController</text></a>
+
+</g>
+</g>
+<g transform="translate(1830.75, 60)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplateController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="WorkoutTemplateController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="WorkoutTemplateController" data-compartment="1">+create: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="WorkoutTemplateController" data-compartment="1">+findById: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="WorkoutTemplateController" data-compartment="1">+findAll: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="WorkoutTemplateController" data-compartment="1">+update: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="WorkoutTemplateController" data-compartment="1">+delete: (req: Request, res: Response, next: NextFunction) =&gt; Promise&lt;void&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="WorkoutTemplateController" data-compartment="1">-workoutTemplateService: IWorkoutTemplateService</text>
+
+</g>
+</g>
+<g transform="translate(1830.75, 173)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="WorkoutTemplateController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="WorkoutTemplateController" data-compartment="2">
+
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

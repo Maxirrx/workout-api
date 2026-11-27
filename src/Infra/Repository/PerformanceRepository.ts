@@ -37,7 +37,7 @@ export class PerformanceRepository implements IPerformanceRepository {
     }
 
     const templateExercices = await Promise.all((row.template_exercise_ids as string[]).map(async (exerciseId) => {
-      const templateExercice = await this.exerciceRepository.findById(exerciseId);
+      const templateExercice = await this.exerciceRepository.findById(Number(exerciseId));
       if (!templateExercice) {
         throw new ApiError(404, "Exercice du modèle introuvable");
       }

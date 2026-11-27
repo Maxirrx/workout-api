@@ -8,8 +8,8 @@
     "build": "tsc",
     "test": "jest",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
+    "format:check": "prettier --check .",
+    "uml": "npx tsuml2 --glob \"./src/**/*.ts\" --tsconfig \"./tsconfig.json\" -m --outMermaidDsl \"./diagram.mmd\""  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Maxirrx/workout-api.git"
@@ -31,6 +31,7 @@
     "jest": "^30.5.2",
     "prettier": "^3.10.1",
     "tslint": "^5.12.1",
+    "tsuml2": "^0.17.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },

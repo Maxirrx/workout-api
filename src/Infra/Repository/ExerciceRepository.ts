@@ -5,7 +5,7 @@ import { IExerciceRepository } from "../../Domain/Port/Out/Repository/IExerciceR
 import { pool } from "../Config/db";
 
 export class ExerciceRepository implements IExerciceRepository {
-  async findById(id: string): Promise<Exercice | undefined> {
+  async findById(id: number): Promise<Exercice | undefined> {
     try {
       const query = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name, m3.name AS muscle_3_name, u.name AS user_name, u.email AS user_email, u.password AS user_password, u.is_public AS user_is_public, u.is_enable AS user_is_enable 
       FROM exercises e JOIN muscles m1 ON e.muscle_1_id = m1.id 
@@ -34,7 +34,7 @@ export class ExerciceRepository implements IExerciceRepository {
     }
   }
 
-  async findAll(): Promise<Exercice[] | undefined> {
+  async findAll(): Promise<Exercice[]> {
     try {
       const query = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name, m3.name AS muscle_3_name, u.name AS user_name, u.email AS user_email, u.password AS user_password, u.is_public AS user_is_public, u.is_enable AS user_is_enable
         FROM exercises e
@@ -47,7 +47,7 @@ export class ExerciceRepository implements IExerciceRepository {
       const result = await pool.query(query);
 
       if (result.rows.length === 0) {
-        return undefined;
+        return [];
       }
 
       const exercices: Exercice[] = [];
@@ -84,7 +84,7 @@ export class ExerciceRepository implements IExerciceRepository {
 
       const result = await pool.query(query, values);
 
-      const created = await this.findById(String(result.rows[0].id));
+      const created = await this.findById(result.rows[0].id);
 
       if (!created) {
         throw new Error("Exercice créé mais introuvable");
@@ -108,7 +108,7 @@ export class ExerciceRepository implements IExerciceRepository {
         throw new Error("Exercice introuvable");
       }
 
-      const updated = await this.findById(String(result.rows[0].id));
+      const updated = await this.findById(result.rows[0].id);
 
       if (!updated) {
         throw new Error("Exercice modifié mais introuvable");
@@ -120,7 +120,7 @@ export class ExerciceRepository implements IExerciceRepository {
     }
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     try {
       const query = `DELETE FROM exercises WHERE id = $1 RETURNING id`;
 

@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { inject, injectable } from "tsyringe";
-import { UserService } from "../../Service/UserService";
 import { User } from "../../../Domain/Entity/User";
+import { IUserService } from "../../../Domain/Port/Out/Service/IUserService";
 
 @injectable()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: IUserService) {}
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

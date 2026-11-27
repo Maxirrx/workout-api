@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { injectable } from "tsyringe";
-import { WorkoutTemplateService } from "../../Service/WorkoutTemplateService";
 import { WorkoutTemplate } from "../../../Domain/Entity/WorkoutTemplate";
 import { Exercice } from "../../../Domain/Entity/Exercice";
 import { User } from "../../../Domain/Entity/User";
+import { IWorkoutTemplateService } from "../../../Domain/Port/Out/Service/IWorkoutTemplateService";
 
 @injectable()
 export class WorkoutTemplateController {
-  constructor(private readonly workoutTemplateService: WorkoutTemplateService) {}
+  constructor(private readonly workoutTemplateService: IWorkoutTemplateService) {}
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

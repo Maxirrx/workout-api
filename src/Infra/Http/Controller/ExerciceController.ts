@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { injectable } from "tsyringe";
-import { ExerciceService } from "../../Service/ExerciceService";
 import { Exercice } from "../../../Domain/Entity/Exercice";
 import { Muscle } from "../../../Domain/Entity/Muscle";
 import { User } from "../../../Domain/Entity/User";
+import { IExerciceService } from "../../../Domain/Port/Out/Service/IExerciceService";
 
 @injectable()
 export class ExerciceController {
-  constructor(private readonly exerciceService: ExerciceService) {}
+  constructor(private readonly exerciceService: IExerciceService) {}
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -37,7 +37,7 @@ export class ExerciceController {
         return;
       }
 
-      const exercice = await this.exerciceService.findById(id);
+      const exercice = await this.exerciceService.findById(Number(id));
 
       if (!exercice) {
         res.status(404).json({ error: "Exercice introuvable" });
@@ -88,7 +88,7 @@ export class ExerciceController {
         return;
       }
 
-      const deleted = await this.exerciceService.delete(id);
+      const deleted = await this.exerciceService.delete(Number(id));
 
       res.status(deleted ? 200 : 404).json({ deleted });
     } catch (error) {

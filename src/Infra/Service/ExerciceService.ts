@@ -15,11 +15,11 @@ export class ExerciceService implements IExerciceService {
     return this.IExerciceRepository.create(exercice);
   }
 
-  async findById(id: string): Promise<Exercice | undefined> {
+  async findById(id: number): Promise<Exercice | undefined> {
     return this.IExerciceRepository.findById(id);
   }
 
-  async findAll(): Promise<Exercice[] | undefined> {
+  async findAll(): Promise<Exercice[]> {
     return this.IExerciceRepository.findAll();
   }
 
@@ -27,7 +27,7 @@ export class ExerciceService implements IExerciceService {
     return this.IExerciceRepository.update(exercice);
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     return this.IExerciceRepository.delete(id);
   }
 }

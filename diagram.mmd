@@ -1,0 +1,300 @@
+
+classDiagram
+
+
+class ApiError{
+            +statusCode: number
++code?: string
+            
+        }
+class Exercice{
+            +id: number
++name: string
++muscle_1: Muscle
++muscle_2: Muscle | undefined
++muscle_3: Muscle | undefined
++user: User
++is_public: boolean
+            +validate() void
++checkIndividualMuscle() void
+        }
+Exercice  --  Muscle
+Exercice  --  Muscle
+Exercice  --  Muscle
+Exercice  --  User
+class Favorite{
+            
+            
+        }
+class Muscle{
+            +id: number
++name: string
+            
+        }
+class Performance{
+            +id: number
++exercice: Exercice
++weight: number | undefined
++rep: number | undefined
++time: number | undefined
++rest: number | undefined
++workout_session: WorkoutSession
+            +validate() void
++checkTime() void
+        }
+Performance  --  Exercice
+Performance  --  WorkoutSession
+class User{
+            +id: number
++name: string
++email: string
++password: string
++is_public: boolean
++is_enable: boolean
++email_verified_at?: Date | null
+            +validate() void
++checkEmail() void
++checkPassword() void
+        }
+class WorkoutSession{
+            +id: number
++user: User
++workout_template: WorkoutTemplate
++date_of_workout: Date
++is_end: boolean
+            +validate() void
++checkDateOfWorkoutForEnd() void
+        }
+WorkoutSession  --  User
+WorkoutSession  --  WorkoutTemplate
+class WorkoutTemplate{
+            +id: number
++name: string
++user: User
++exercices: Exercice[]
++is_public: boolean
+            
+        }
+WorkoutTemplate  --  User
+WorkoutTemplate  -- "0..*" Exercice
+class ExerciceService{
+            
+            +canUpdateExercice() void
++canCreateExercice() void
+        }
+class DUserService{
+            -userRepository: IUserRepository
+            +canCreateUser() Promise~void~
+        }
+DUserService  --  IUserRepository
+class WorkoutTemplateService{
+            
+            +canUpdateWorkoutTemplate() void
++canCreateWorkoutTemplate() void
+        }
+class ExerciceRepository{
+            
+            +findById() Promise~Exercice | undefined~
++findAll() Promise~Exercice[]~
++create() Promise~Exercice~
++update() Promise~Exercice~
++delete() Promise~boolean~
+        }
+IExerciceRepository<|..ExerciceRepository
+class PerformanceRepository{
+            -exerciceRepository: IExerciceRepository
+            +findById() Promise~Performance | undefined~
++findAll() Promise~Performance[]~
++create() Promise~Performance~
++update() Promise~Performance | undefined~
++delete() Promise~boolean~
+        }
+IPerformanceRepository<|..PerformanceRepository
+PerformanceRepository  --  IExerciceRepository
+class userRepository{
+            
+            +findByEmail() Promise~User | undefined~
++findByName() Promise~User | undefined~
++findById() Promise~User | undefined~
++findAll() Promise~User[] | undefined~
++create() Promise~User~
++update() Promise~User~
++delete() Promise~boolean~
++disable() Promise~boolean~
++enable() Promise~boolean~
+        }
+IUserRepository<|..userRepository
+class WorkoutTemplateRepository{
+            -userRepository: IUserRepository
+-exerciceRepository: IExerciceRepository
+            +create() Promise~WorkoutTemplate~
++delete() Promise~boolean~
++update() Promise~WorkoutTemplate~
++findById() Promise~WorkoutTemplate~
++findAll() Promise~WorkoutTemplate[]~
+        }
+IWorkoutTemplateRepository<|..WorkoutTemplateRepository
+WorkoutTemplateRepository  --  IUserRepository
+WorkoutTemplateRepository  --  IExerciceRepository
+class ExerciceService{
+            -IExerciceRepository: IExerciceRepository
+            +create() Promise~Exercice~
++findById() Promise~Exercice | undefined~
++findAll() Promise~Exercice[]~
++update() Promise~Exercice~
++delete() Promise~boolean~
+        }
+IExerciceService<|..ExerciceService
+ExerciceService  --  IExerciceRepository
+class PerformanceService{
+            -performanceRepository: IPerformanceRepository
+            +findById() Promise~Performance | undefined~
++findAll() Promise~Performance[]~
++create() Promise~Performance~
++update() Promise~Performance | undefined~
++delete() Promise~boolean~
+        }
+IPerformanceService<|..PerformanceService
+PerformanceService  --  IPerformanceRepository
+class UserService{
+            -IUserRepository: IUserRepository
+-dUserService: DUserService
+            +create() Promise~User~
++findByName() Promise~User | undefined~
++findByEmail() Promise~User | undefined~
++findByID() Promise~User | undefined~
++findAll() Promise~User[] | undefined~
++update() Promise~User~
++delete() Promise~boolean~
++disable() Promise~boolean~
++enable() Promise~boolean~
+        }
+IUserService<|..UserService
+UserService  --  IUserRepository
+UserService  --  DUserService
+class WorkoutTemplateService{
+            -IWorkoutTemplateRepository: IWorkoutTemplateRepository
+            +create() Promise~WorkoutTemplate~
++findById() Promise~WorkoutTemplate | undefined~
++findAll() Promise~WorkoutTemplate[] | undefined~
++update() Promise~WorkoutTemplate~
++delete() Promise~boolean~
+        }
+IWorkoutTemplateService<|..WorkoutTemplateService
+WorkoutTemplateService  --  IWorkoutTemplateRepository
+class ExerciceController{
+            +create: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findById: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findAll: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++update: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++delete: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
+-exerciceService: IExerciceService
+            
+        }
+ExerciceController  --  IExerciceService
+class PerformanceController{
+            +create: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findById: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findAll: (_req: Request, res: Response, next: NextFunction) =~ Promise~void~
++update: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++delete: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
+-performanceService: IPerformanceService
+            
+        }
+PerformanceController  --  IPerformanceService
+class UserController{
+            +create: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findByName: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findByEmail: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findById: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findAll: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++update: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++delete: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++disable: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++enable: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
+-userService: IUserService
+            
+        }
+UserController  --  IUserService
+class WorkoutTemplateController{
+            +create: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findById: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++findAll: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++update: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
++delete: (req: Request, res: Response, next: NextFunction) =~ Promise~void~
+-workoutTemplateService: IWorkoutTemplateService
+            
+        }
+WorkoutTemplateController  --  IWorkoutTemplateService
+class IExerciceRepository{
+            
+            +findById() Promise~Exercice | undefined~*
++findAll() Promise~Exercice[]~*
++create() Promise~Exercice~*
++update() Promise~Exercice~*
++delete() Promise~boolean~*
+        }
+class IPerformanceRepository{
+            
+            +findById() Promise~Performance | undefined~*
++findAll() Promise~Performance[]~*
++create() Promise~Performance~*
++update() Promise~Performance | undefined~*
++delete() Promise~boolean~*
+        }
+class IUserRepository{
+            
+            +findByEmail() Promise~User | undefined~*
++findByName() Promise~User | undefined~*
++findById() Promise~User | undefined~*
++findAll() Promise~User[] | undefined~*
++create() Promise~User~*
++update() Promise~User~*
++delete() Promise~boolean~*
++disable() Promise~boolean~*
++enable() Promise~boolean~*
+        }
+class IWorkoutTemplateRepository{
+            
+            +create() Promise~WorkoutTemplate~*
++delete() Promise~boolean~*
++update() Promise~WorkoutTemplate~*
++findById() Promise~WorkoutTemplate~*
++findAll() Promise~WorkoutTemplate[]~*
+        }
+class IExerciceService{
+            
+            +findById() Promise~Exercice | undefined~*
++findAll() Promise~Exercice[]~*
++create() Promise~Exercice~*
++update() Promise~Exercice | undefined~*
++delete() Promise~boolean~*
+        }
+class IPerformanceService{
+            
+            +findById() Promise~Performance | undefined~*
++findAll() Promise~Performance[]~*
++create() Promise~Performance~*
++update() Promise~Performance | undefined~*
++delete() Promise~boolean~*
+        }
+class IUserService{
+            
+            +create() Promise~User~*
++findByName() Promise~User | undefined~*
++findByEmail() Promise~User | undefined~*
++findByID() Promise~User | undefined~*
++findAll() Promise~User[] | undefined~*
++update() Promise~User~*
++delete() Promise~boolean~*
++disable() Promise~boolean~*
++enable() Promise~boolean~*
+        }
+class IWorkoutTemplateService{
+            
+            +create() Promise~WorkoutTemplate~*
++findById() Promise~WorkoutTemplate | undefined~*
++findAll() Promise~WorkoutTemplate[] | undefined~*
++update() Promise~WorkoutTemplate~*
++delete() Promise~boolean~*
+        }
