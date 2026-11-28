@@ -12,7 +12,7 @@ import { userRepository } from "./UserRepository";
 export class PerformanceRepository implements IPerformanceRepository {
   constructor(private readonly exerciceRepository: IExerciceRepository, private readonly users = new userRepository()) {}
 
-  private readonly selectPerformance = `SELECT p.*, s.date_of_workout, s.is_end, t.id AS template_id,
+  private readonly selectPerformance: string = `SELECT p.*, s.date_of_workout, s.is_end, t.id AS template_id,
               t.name AS template_name, t.is_public AS template_is_public,
               s.user_id AS session_user_id, t.user_id AS template_user_id, ps.name AS status_name,
               ARRAY(SELECT json_build_object('id', i.id::text, 'url', i.url)

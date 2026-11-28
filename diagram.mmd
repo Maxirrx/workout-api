@@ -15,6 +15,7 @@ class Exercice{
 +muscle_3: Muscle | undefined
 +user: User
 +is_public: boolean
++picture?: Image | null
             +validate() void
 +checkIndividualMuscle() void
         }
@@ -22,8 +23,10 @@ Exercice  --  Muscle
 Exercice  --  Muscle
 Exercice  --  Muscle
 Exercice  --  User
-class Favorite{
-            
+Exercice  --  Image
+class Image{
+            +id: number
++url: string
             
         }
 class Muscle{
@@ -39,11 +42,24 @@ class Performance{
 +time: number | undefined
 +rest: number | undefined
 +workout_session: WorkoutSession
++status?: PerformanceStatus | null
             +validate() void
 +checkTime() void
         }
 Performance  --  Exercice
 Performance  --  WorkoutSession
+Performance  --  PerformanceStatus
+class PerformanceStatus{
+            +id: number
++name: string
+            
+        }
+class Role{
+            +id: number
++name: string
++app_id: string
+            
+        }
 class User{
             +id: number
 +name: string
@@ -51,22 +67,33 @@ class User{
 +password: string
 +is_public: boolean
 +is_enable: boolean
++roles: Role[]
++phone?: string | null
++picture?: Image | null
 +email_verified_at?: Date | null
++favorites: WorkoutTemplate[]
++friends: User[]
             +validate() void
 +checkEmail() void
 +checkPassword() void
         }
+User  -- "0..*" Role
+User  --  Image
+User  -- "0..*" WorkoutTemplate
+User  -- "0..*" User
 class WorkoutSession{
             +id: number
 +user: User
 +workout_template: WorkoutTemplate
 +date_of_workout: Date
 +is_end: boolean
++pictures: Image[]
             +validate() void
 +checkDateOfWorkoutForEnd() void
         }
 WorkoutSession  --  User
 WorkoutSession  --  WorkoutTemplate
+WorkoutSession  -- "0..*" Image
 class WorkoutTemplate{
             +id: number
 +name: string
@@ -75,7 +102,6 @@ class WorkoutTemplate{
 +is_public: boolean
             
         }
-WorkoutTemplate  --  User
 WorkoutTemplate  -- "0..*" Exercice
 class ExerciceService{
             
@@ -93,8 +119,10 @@ class WorkoutTemplateService{
 +canCreateWorkoutTemplate() void
         }
 class ExerciceRepository{
-            
-            +findById() Promise~Exercice | undefined~
+            -selectExercice: string
+-users: Pick~IUserRepository, "findById"~
+            -makeExercice() Promise~Exercice~
++findById() Promise~Exercice | undefined~
 +findAll() Promise~Exercice[]~
 +create() Promise~Exercice~
 +update() Promise~Exercice~
@@ -102,8 +130,11 @@ class ExerciceRepository{
         }
 IExerciceRepository<|..ExerciceRepository
 class PerformanceRepository{
-            -exerciceRepository: IExerciceRepository
-            +findById() Promise~Performance | undefined~
+            -selectPerformance: string
+-exerciceRepository: IExerciceRepository
+-users: userRepository
+            -makePerformance() Promise~Performance~
++findById() Promise~Performance | undefined~
 +findAll() Promise~Performance[]~
 +create() Promise~Performance~
 +update() Promise~Performance | undefined~
@@ -111,9 +142,13 @@ class PerformanceRepository{
         }
 IPerformanceRepository<|..PerformanceRepository
 PerformanceRepository  --  IExerciceRepository
+PerformanceRepository  --  userRepository
 class userRepository{
-            
-            +findByEmail() Promise~User | undefined~
+            -selectUser: string
+            -makeUser() User
+-makeUserWithRelations() Promise~User~
+-findReferenceById() Promise~User | undefined~
++findByEmail() Promise~User | undefined~
 +findByName() Promise~User | undefined~
 +findById() Promise~User | undefined~
 +findAll() Promise~User[] | undefined~
@@ -125,16 +160,17 @@ class userRepository{
         }
 IUserRepository<|..userRepository
 class WorkoutTemplateRepository{
-            -userRepository: IUserRepository
+            -selectWorkoutTemplate: string
+-userRepository: Pick~IUserRepository, "findById"~
 -exerciceRepository: IExerciceRepository
             +create() Promise~WorkoutTemplate~
 +delete() Promise~boolean~
 +update() Promise~WorkoutTemplate~
+-makeWorkoutTemplate() Promise~WorkoutTemplate~
 +findById() Promise~WorkoutTemplate~
 +findAll() Promise~WorkoutTemplate[]~
         }
 IWorkoutTemplateRepository<|..WorkoutTemplateRepository
-WorkoutTemplateRepository  --  IUserRepository
 WorkoutTemplateRepository  --  IExerciceRepository
 class ExerciceService{
             -IExerciceRepository: IExerciceRepository

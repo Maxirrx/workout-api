@@ -6,7 +6,7 @@ import { ApiError } from "../../Utils/ApiError";
 import { pool } from "../Config/db";
 
 export class WorkoutTemplateRepository implements IWorkoutTemplateRepository {
-  private readonly selectWorkoutTemplate = `SELECT t.*,
+  private readonly selectWorkoutTemplate: string = `SELECT t.*,
     ARRAY(SELECT exercise_id FROM workout_template_exercises WHERE workout_template_id = t.id ORDER BY position) AS exercise_ids
     FROM workout_templates t`;
 

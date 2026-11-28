@@ -8,7 +8,7 @@ import { ExerciceRepository } from "./ExerciceRepository";
 import { WorkoutTemplateRepository } from "./WorkoutTemplateRepository";
 
 export class userRepository implements IUserRepository {
-  private readonly selectUser = `SELECT u.*, i.url AS picture_url,
+  private readonly selectUser: string = `SELECT u.*, i.url AS picture_url,
     ARRAY(SELECT json_build_object('id', r.id::text, 'name', r.name, 'app_id', r.app_id)
       FROM user_roles ur JOIN roles r ON r.id = ur.role_id
       WHERE ur.user_id = u.id ORDER BY r.id) AS roles

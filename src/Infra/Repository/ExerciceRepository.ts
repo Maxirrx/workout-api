@@ -7,7 +7,7 @@ import { pool } from "../Config/db";
 import { userRepository } from "./UserRepository";
 
 export class ExerciceRepository implements IExerciceRepository {
-  private readonly selectExercice = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name,
+  private readonly selectExercice: string = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name,
     m3.name AS muscle_3_name, i.url AS picture_url
     FROM exercises e
     JOIN muscles m1 ON m1.id = e.muscle_1_id
