@@ -38,7 +38,9 @@ container.register(UserController, { useFactory: (c) => new UserController(c.res
 
 // ==================== EXERCICE ====================
 
-container.register<IExerciceRepository>("IExerciceRepository", { useClass: ExerciceRepository });
+container.register<IExerciceRepository>("IExerciceRepository", {
+  useFactory: (c) => new ExerciceRepository(c.resolve<IUserRepository>("IUserRepository"))
+});
 
 container.register(ExerciceService, { useFactory: (c) => new ExerciceService(c.resolve<IExerciceRepository>("IExerciceRepository")) });
 

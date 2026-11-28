@@ -1,34 +1,44 @@
+import { Image } from "../../Domain/Entity/Image";
 import { Exercice } from "../../Domain/Entity/Exercice";
 import { Muscle } from "../../Domain/Entity/Muscle";
-import { User } from "../../Domain/Entity/User";
+import { IUserRepository } from "../../Domain/Port/Out/Repository/IUserRepository";
 import { IExerciceRepository } from "../../Domain/Port/Out/Repository/IExerciceRepository";
 import { pool } from "../Config/db";
+import { userRepository } from "./UserRepository";
 
 export class ExerciceRepository implements IExerciceRepository {
+  private readonly selectExercice = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name,
+    m3.name AS muscle_3_name, i.url AS picture_url
+    FROM exercises e
+    JOIN muscles m1 ON m1.id = e.muscle_1_id
+    LEFT JOIN muscles m2 ON m2.id = e.muscle_2_id
+    LEFT JOIN muscles m3 ON m3.id = e.muscle_3_id
+    LEFT JOIN images i ON i.id = e.picture_id`;
+
+  constructor(private readonly users: Pick<IUserRepository, "findById"> = new userRepository()) {}
+
+  private async makeExercice(row: Record<string, any>): Promise<Exercice> {
+    const user = await this.users.findById(Number(row.user_id));
+    if (!user) {
+      throw new Error("Utilisateur introuvable");
+    }
+
+    return new Exercice(
+      Number(row.id),
+      row.name,
+      new Muscle(Number(row.muscle_1_id), row.muscle_1_name),
+      row.muscle_2_id == null ? undefined : new Muscle(Number(row.muscle_2_id), row.muscle_2_name),
+      row.muscle_3_id == null ? undefined : new Muscle(Number(row.muscle_3_id), row.muscle_3_name),
+      user,
+      row.is_public,
+      row.picture_id == null ? null : new Image(Number(row.picture_id), row.picture_url)
+    );
+  }
+
   async findById(id: number): Promise<Exercice | undefined> {
     try {
-      const query = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name, m3.name AS muscle_3_name, u.name AS user_name, u.email AS user_email, u.password AS user_password, u.is_public AS user_is_public, u.is_enable AS user_is_enable 
-      FROM exercises e JOIN muscles m1 ON e.muscle_1_id = m1.id 
-      LEFT JOIN muscles m2 ON e.muscle_2_id = m2.id 
-      LEFT JOIN muscles m3 ON e.muscle_3_id = m3.id JOIN users u ON e.user_id = u.id WHERE e.id = $1`;
-
-      const result = await pool.query(query, [id]);
-
-      if (result.rows.length === 0) {
-        return undefined;
-      }
-
-      const row = result.rows[0];
-
-      return new Exercice(
-        row.id,
-        row.name,
-        new Muscle(row.muscle_1_id, row.muscle_1_name),
-        row.muscle_2_id ? new Muscle(row.muscle_2_id, row.muscle_2_name) : undefined,
-        row.muscle_3_id ? new Muscle(row.muscle_3_id, row.muscle_3_name) : undefined,
-        new User(row.user_id, row.user_name, row.user_email, row.user_password, row.user_is_public, row.user_is_enable),
-        row.is_public
-      );
+      const { rows } = await pool.query(`${this.selectExercice} WHERE e.id = $1`, [id]);
+      return rows[0] && await this.makeExercice(rows[0]);
     } catch (e) {
       throw new Error("Erreur Database [ExerciceRepository findById]\n" + e);
     }
@@ -36,37 +46,8 @@ export class ExerciceRepository implements IExerciceRepository {
 
   async findAll(): Promise<Exercice[]> {
     try {
-      const query = `SELECT e.*, m1.name AS muscle_1_name, m2.name AS muscle_2_name, m3.name AS muscle_3_name, u.name AS user_name, u.email AS user_email, u.password AS user_password, u.is_public AS user_is_public, u.is_enable AS user_is_enable
-        FROM exercises e
-        JOIN muscles m1 ON e.muscle_1_id = m1.id
-        LEFT JOIN muscles m2 ON e.muscle_2_id = m2.id
-        LEFT JOIN muscles m3 ON e.muscle_3_id = m3.id
-        JOIN users u ON e.user_id = u.id
-      `;
-
-      const result = await pool.query(query);
-
-      if (result.rows.length === 0) {
-        return [];
-      }
-
-      const exercices: Exercice[] = [];
-
-      result.rows.forEach((row) => {
-        const exercice = new Exercice(
-          row.id,
-          row.name,
-          new Muscle(row.muscle_1_id, row.muscle_1_name),
-          row.muscle_2_id ? new Muscle(row.muscle_2_id, row.muscle_2_name!) : undefined,
-          row.muscle_3_id ? new Muscle(row.muscle_3_id, row.muscle_3_name!) : undefined,
-          new User(row.user_id, row.user_name, row.user_email, row.user_password, row.user_is_public, row.user_is_enable),
-          row.is_public
-        );
-
-        exercices.push(exercice);
-      });
-
-      return exercices;
+      const { rows } = await pool.query(this.selectExercice);
+      return await Promise.all(rows.map((row) => this.makeExercice(row)));
     } catch (e) {
       throw new Error("Erreur Database [ExerciceRepository getAll]\n" + e);
     }
@@ -75,12 +56,12 @@ export class ExerciceRepository implements IExerciceRepository {
   async create(exercice: Exercice): Promise<Exercice> {
     try {
       const query = `
-        INSERT INTO exercises (name, muscle_1_id, muscle_2_id, muscle_3_id, user_id, is_public)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO exercises (name, muscle_1_id, muscle_2_id, muscle_3_id, user_id, is_public, picture_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING id
       `;
 
-      const values = [exercice.name, exercice.muscle_1.id, exercice.muscle_2?.id ?? null, exercice.muscle_3?.id ?? null, exercice.user.id, exercice.is_public];
+      const values = [exercice.name, exercice.muscle_1.id, exercice.muscle_2?.id ?? null, exercice.muscle_3?.id ?? null, exercice.user.id, exercice.is_public, exercice.picture?.id];
 
       const result = await pool.query(query, values);
 
@@ -98,9 +79,9 @@ export class ExerciceRepository implements IExerciceRepository {
 
   async update(exercice: Exercice): Promise<Exercice> {
     try {
-      const query = `UPDATE exercises SET name = $1, muscle_1_id = $2, muscle_2_id = $3, muscle_3_id = $4, user_id = $5, is_public = $6 WHERE id = $7 RETURNING id`;
+      const query = `UPDATE exercises SET name = $1, muscle_1_id = $2, muscle_2_id = $3, muscle_3_id = $4, user_id = $5, is_public = $6, picture_id = CASE WHEN $7 THEN $8 ELSE picture_id END WHERE id = $9 RETURNING id`;
 
-      const values = [exercice.name, exercice.muscle_1.id, exercice.muscle_2?.id ?? null, exercice.muscle_3?.id ?? null, exercice.user.id, exercice.is_public, exercice.id];
+      const values = [exercice.name, exercice.muscle_1.id, exercice.muscle_2?.id ?? null, exercice.muscle_3?.id ?? null, exercice.user.id, exercice.is_public, exercice.picture !== undefined, exercice.picture?.id, exercice.id];
 
       const result = await pool.query(query, values);
 

@@ -9,14 +9,14 @@ export class UserController {
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { name, email, password, is_public, is_enable } = req.body;
+      const { name, email, password, is_public, is_enable, phone, picture } = req.body;
 
       if (typeof name !== "string" || typeof email !== "string" || typeof password !== "string") {
         res.status(400).json({ error: "Données utilisateur invalides" });
         return;
       }
 
-      const user = new User(1, name, email, password, is_public, is_enable);
+      const user = new User(1, name, email, password, is_public, is_enable, undefined, phone, picture);
 
       const createdUser = await this.userService.create(user);
 
@@ -89,7 +89,8 @@ export class UserController {
 
   update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const user = req.body;
+      const { id, name, email, password, is_public, is_enable, phone, picture } = req.body;
+      const user = { id, name, email, password, is_public, is_enable, phone, picture } as User;
 
       const updatedUser = await this.userService.update(user);
 

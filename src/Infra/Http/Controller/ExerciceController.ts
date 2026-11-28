@@ -11,14 +11,14 @@ export class ExerciceController {
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { name, muscle_1, muscle_2, muscle_3, user, is_public } = req.body;
+      const { name, muscle_1, muscle_2, muscle_3, user, is_public, picture } = req.body;
 
       if (typeof name !== "string" || !muscle_1 || !user || typeof is_public !== "boolean") {
         res.status(400).json({ error: "Données exercice invalides" });
         return;
       }
 
-      const exercice = new Exercice(0, name, muscle_1 as Muscle, muscle_2 as Muscle | undefined, muscle_3 as Muscle | undefined, user as User, is_public);
+      const exercice = new Exercice(0, name, muscle_1 as Muscle, muscle_2 as Muscle | undefined, muscle_3 as Muscle | undefined, user as User, is_public, picture);
 
       const createdExercice = await this.exerciceService.create(exercice);
 
@@ -62,14 +62,14 @@ export class ExerciceController {
 
   update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { id, name, muscle_1, muscle_2, muscle_3, user, is_public } = req.body;
+      const { id, name, muscle_1, muscle_2, muscle_3, user, is_public, picture } = req.body;
 
       if (id === undefined || typeof name !== "string" || !muscle_1 || !user || typeof is_public !== "boolean") {
         res.status(400).json({ error: "Données exercice invalides" });
         return;
       }
 
-      const exercice = new Exercice(id, name, muscle_1 as Muscle, muscle_2 as Muscle | undefined, muscle_3 as Muscle | undefined, user as User, is_public);
+      const exercice = new Exercice(id, name, muscle_1 as Muscle, muscle_2 as Muscle | undefined, muscle_3 as Muscle | undefined, user as User, is_public, picture);
 
       const updatedExercice = await this.exerciceService.update(exercice);
 

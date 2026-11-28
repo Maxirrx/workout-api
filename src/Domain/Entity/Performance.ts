@@ -1,3 +1,4 @@
+import { PerformanceStatus } from "./PerformanceStatus";
 import { ApiError } from "../../Utils/ApiError";
 import { Exercice, makeExerciceFaker } from "./Exercice";
 
@@ -11,8 +12,9 @@ export class Performance {
   time: number | undefined;
   rest: number | undefined;
   workout_session: WorkoutSession;
+  status?: PerformanceStatus | null;
 
-  constructor(id: number, exercice: Exercice, weight: number | undefined, rep: number | undefined, time: number | undefined, rest: number | undefined, workout_session: WorkoutSession) {
+  constructor(id: number, exercice: Exercice, weight: number | undefined, rep: number | undefined, time: number | undefined, rest: number | undefined, workout_session: WorkoutSession, status?: PerformanceStatus | null) {
     this.id = id;
     this.exercice = exercice;
     this.weight = weight;
@@ -20,6 +22,7 @@ export class Performance {
     this.time = time;
     this.rest = rest;
     this.workout_session = workout_session;
+    this.status = status;
 
     this.validate();
   }
@@ -36,8 +39,18 @@ export class Performance {
 
 }
 
-export function makePerformanceFaker(performance? : Partial<Performance>){
-  const exercice = makeExerciceFaker()
+export function makePerformanceFaker(performance?: Partial<Performance>): Performance {
+  const exercice = makeExerciceFaker();
+  const workoutSession = makeWorkoutSessionFaker();
 
-  return new Performance(performance?.id ?? 1, performance?.exercice ?? exercice, performance?.weight ?? 100, performance?.rep ?? 12, performance?.time ?? undefined, performance?.rest ?? undefined, performance?.workout_session ?? makeWorkoutSessionFaker({}))
+  return new Performance(
+    performance?.id ?? 1,
+    performance?.exercice ?? exercice,
+    performance?.weight ?? 100,
+    performance?.rep ?? 12,
+    performance?.time,
+    performance?.rest,
+    performance?.workout_session ?? workoutSession,
+    performance?.status
+  );
 }

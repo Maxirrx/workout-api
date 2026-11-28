@@ -8,6 +8,6 @@ export class Muscle {
   }
 }
 
-export function makeMuscleFaker(muscle : Partial<Muscle>): Muscle {
+export function makeMuscleFaker(muscle?: Partial<Muscle>): Muscle {
   return new Muscle(muscle?.id ?? 1, muscle?.name ?? "Biceps");
 }

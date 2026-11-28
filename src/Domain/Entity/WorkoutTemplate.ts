@@ -12,13 +12,20 @@ export class WorkoutTemplate {
     this.id = id;
     this.name = name;
     this.user = user;
-    this.exercices = exercices
+    this.exercices = exercices;
     this.is_public = is_public;
   }
 }
 
-export function makeWorkoutTemplateFaker(workoutTemplate? : Partial<WorkoutTemplate>): WorkoutTemplate {
+export function makeWorkoutTemplateFaker(workoutTemplate?: Partial<WorkoutTemplate>): WorkoutTemplate {
   const user = makeUserFaker();
+  const exercice = makeExerciceFaker();
 
-  return new WorkoutTemplate(workoutTemplate?.id ?? 1, workoutTemplate?.name ?? "PUSH", workoutTemplate?.user ?? user, workoutTemplate?.exercices ?? [makeExerciceFaker()], workoutTemplate?.is_public ?? false);
+  return new WorkoutTemplate(
+    workoutTemplate?.id ?? 1,
+    workoutTemplate?.name ?? "PUSH",
+    workoutTemplate?.user ?? user,
+    workoutTemplate?.exercices ?? [exercice],
+    workoutTemplate?.is_public ?? false
+  );
 }
